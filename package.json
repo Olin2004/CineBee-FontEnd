@@ -1,0 +1,36 @@
+{
+  "name": "cinema-zino-frontend",
+  "version": "1.0.0",
+  "description": "A frontend application for Cinema Zino, built with React, Vite, TailwindCSS, and Material-UI.",
+  "main": "src/main.jsx",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.0.0",
+    "@emotion/styled": "^11.0.0",
+    "@mui/material": "^5.0.0",
+    "axios": "^0.21.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.0.0",
+    "tailwindcss": "^2.2.19"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.5.1",
+    "eslint": "^7.0.0",
+    "eslint-plugin-react": "^7.0.0",
+    "vite": "^6.3.5"
+  },
+  "keywords": [
+    "react",
+    "vite",
+    "tailwindcss",
+    "mui",
+    "cinema"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
