@@ -31,7 +31,7 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchProfile.fulfilled, (state, action) => {
       state.profile = action.payload;
-      // Nếu có accessToken và profile trả về object hợp lệ, xác thực đăng nhập
+      // If there's an accessToken and profile returns a valid object, authenticate login
       state.isAuthenticated = !!state.accessToken && !!action.payload && !!action.payload.id;
     });
   },

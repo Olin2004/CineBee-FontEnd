@@ -20,22 +20,22 @@ const WeekTabs = ({ onChange }) => {
   };
 
   return (
-    <div className="flex gap-3 w-full max-w-[1200px] mx-auto mt-8">
+    <div className="flex gap-3 w-full max-w-[1200px] mx-auto mt-8 px-4">
       {days.map((d) => (
         <button
           key={d.key}
           onClick={() => handleClick(d.key)}
-          className={`flex flex-col items-center justify-center px-8 py-3 rounded-md font-semibold transition-all duration-200 shadow-md
+          className={`flex flex-col items-center justify-center px-8 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg transform hover:scale-105
             ${
               active === d.key
-                ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-lg'
-                : 'bg-[#23232b] text-white hover:bg-[#333]'
+                ? 'bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-xl scale-105'
+                : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600'
             }
           `}
           style={{ minWidth: 140, fontSize: 17 }}
         >
           <span className="text-base font-bold">{d.label}</span>
-          <span className="text-sm font-normal">{d.sub}</span>
+          <span className="text-sm font-normal opacity-80">{d.sub}</span>
         </button>
       ))}
     </div>

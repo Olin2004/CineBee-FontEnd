@@ -10,7 +10,7 @@ function cn(...args) {
 export default function GrowingSearchVariant1() {
   return (
     <div className="flex flex-col items-center">
-      <p className="mb-8 text-neutral-500/70 tracking-tighter">
+      <p className="mb-8 text-gray-500 dark:text-gray-400 tracking-tighter">
         Press enter to see all the effects
       </p>
       <SearchBar />
@@ -49,7 +49,7 @@ export const SearchBar = () => {
   return (
     <label
       className={cn(
-        'relative inline-flex origin-center rounded-full text-neutral-500 dark:text-neutral-400',
+        'relative inline-flex origin-center rounded-full text-gray-500 dark:text-gray-400',
         'group transform-gpu transition-all ease-in-out',
         ' relative',
         // searchSubmitted
@@ -67,14 +67,14 @@ export const SearchBar = () => {
         className={cn(
           'peer max-w-10 transform-gpu rounded-full p-2 pl-10 transition-all ease-in-out focus:max-w-40',
           // BACKGROUND
-          'bg-white/70 hover:bg-white/80 dark:bg-neutral-800/70 dark:hover:bg-neutral-900/80',
+          'bg-white/90 hover:bg-white dark:bg-gray-800/90 dark:hover:bg-gray-800',
           // OUTLINE
           '-outline-offset-1 outline outline-1',
           searchSubmittedOutline
             ? 'outline-blue-500 duration-150'
-            : 'outline-neutral-200/0 duration-300 hover:outline-neutral-200/100 dark:outline-neutral-800/0 dark:focus:placeholder-neutral-300/100 dark:hover:outline-neutral-800/100',
+            : 'outline-gray-200/0 duration-300 hover:outline-gray-200/100 dark:outline-gray-600/0 dark:focus:placeholder-gray-400/100 dark:hover:outline-gray-600/100',
           // PLACEHOLDER
-          ' placeholder-neutral-300/0 focus:placeholder-neutral-300/100 dark:placeholder-neutral-700/0 dark:focus:placeholder-neutral-700/100'
+          ' placeholder-gray-400/0 focus:placeholder-gray-400/100 dark:placeholder-gray-500/0 dark:focus:placeholder-gray-500/100'
         )}
         id="search"
         onBlur={() => {
@@ -93,7 +93,7 @@ export const SearchBar = () => {
         type="search"
         value={searchValue}
       />
-      <SearchIcon className="-translate-y-1/2 pointer-events-none absolute top-1/2 left-3.5 size-5 text-neutral-300 transition-colors peer-focus:text-neutral-500 dark:text-neutral-700" />
+      <SearchIcon className="-translate-y-1/2 pointer-events-none absolute top-1/2 left-3.5 size-5 text-gray-400 dark:text-gray-500 transition-colors peer-focus:text-gray-600 dark:peer-focus:text-gray-300" />
     </label>
   );
 };

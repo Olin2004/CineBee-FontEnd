@@ -21,10 +21,10 @@ export function useGoogleLogin() {
       localStorage.setItem('accessToken', res.data.accessToken);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       dispatch(setAuth({ user: res.data.user, accessToken: res.data.accessToken }));
-      // Nếu muốn đồng bộ lại profile từ BE:
+
       // dispatch(fetchProfile());
       setSuccess(MESSAGES.LOGIN.SUCCESS);
-      toast(<CustomSuccessToast title="Thành công" message={MESSAGES.LOGIN.SUCCESS} />, {
+      toast(<CustomSuccessToast title="Success" message={MESSAGES.LOGIN.SUCCESS} />, {
         position: 'top-right',
         autoClose: 1800,
         transition: Slide,
@@ -38,8 +38,8 @@ export function useGoogleLogin() {
           boxShadow: '0 2px 12px #0001',
         },
       });
-      // Reload lại trang về trang chủ để header cập nhật ngay
-      window.location.href = '/home-cinebee'; // Reload lại trang về trang chủ để header cập nhật ngay
+      // Reload page to home to update header immediately
+      window.location.href = '/home-cinebee'; // Reload page to home to update header immediately
     } catch (err) {
       setLoading(false);
       setError(

@@ -7,3 +7,5 @@ export const LOGIN_GOOGLE = "/auth/google";
 
 // PROFILE
 export const ENDPOINTS_PROFILE = "/profile";
+//movies
+export const ENDPOINTS_TRENDING_MOVIES = "/movies/trending";

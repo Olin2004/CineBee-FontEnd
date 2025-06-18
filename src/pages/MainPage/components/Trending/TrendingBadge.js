@@ -1,5 +1,5 @@
 // TrendingBadge.js
-// Badge hiển thị trạng thái thịnh hành, đẹp, dễ tái sử dụng
+// Badge displaying trending status, beautiful, reusable
 import React from 'react';
 import { FaFire } from 'react-icons/fa';
 import 'swiper/css';
@@ -15,12 +15,12 @@ const clipPathStyles = [
 const TrendingBadge = ({ index, rating }) => (
   <div className="flex items-center gap-2">
     <span
-      className="text-4xl font-extrabold text-yellow-400 drop-shadow-lg select-none"
+      className="text-4xl font-extrabold text-yellow-500 dark:text-yellow-400 drop-shadow-lg select-none"
       style={{ minWidth: 32 }}
     >
       {index}
     </span>
-    <span className="inline-flex items-center px-2 py-1 rounded-full bg-black/90 text-yellow-400 font-bold text-sm shadow ml-1">
+    <span className="inline-flex items-center px-2 py-1 rounded-full bg-gray-800 dark:bg-black/90 text-yellow-500 dark:text-yellow-400 font-bold text-sm shadow ml-1">
       <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 16 16">
         <circle cx="8" cy="8" r="8" fill="#facc15" />
         <path
@@ -37,11 +37,11 @@ const TrendingBadge = ({ index, rating }) => (
 );
 
 export default TrendingBadge;
-// Dữ liệu tạm cho trending (dùng cho demo, có thể import sang Home.js hoặc nơi khác)
+// Temporary data for trending (used for demo, can be imported to Home.js or elsewhere)
 export const trendingMovies = [
   {
     id: 1,
-    title: 'Tiên Nghịch',
+    title: 'Immortal Rebellion',
     othernames: 'Xian Ni',
     rating: 9.2,
     votes: 1200,
@@ -49,7 +49,7 @@ export const trendingMovies = [
   },
   {
     id: 2,
-    title: 'Đấu Phá Thương Khung',
+    title: 'Battle Through the Heavens',
     othernames: 'Fights Break Sphere',
     rating: 8.7,
     votes: 950,
@@ -57,7 +57,7 @@ export const trendingMovies = [
   },
   {
     id: 3,
-    title: 'Tru Tiên',
+    title: 'Jade Dynasty',
     othernames: 'Jade Dynasty',
     rating: 8.5,
     votes: 800,
@@ -65,7 +65,7 @@ export const trendingMovies = [
   },
   {
     id: 4,
-    title: 'Mục Thần Ký',
+    title: 'Divine Record',
     othernames: 'Mu Shen Ji',
     rating: 8.2,
     votes: 700,
@@ -73,7 +73,7 @@ export const trendingMovies = [
   },
   {
     id: 5,
-    title: 'Già Thiên',
+    title: 'Shrouding the Heavens',
     othernames: 'Shrouding the Heavens',
     rating: 8.0,
     votes: 600,
@@ -81,24 +81,24 @@ export const trendingMovies = [
   },
   {
     id: 6,
-    title: 'Gặp Lại Chị Bầu',
-    othernames: 'Gặp Lại Chị Bầu',
+    title: 'Meeting Sister Again',
+    othernames: 'Meeting Sister Again',
     rating: 8.0,
     votes: 600,
     img: 'https://hoathinh3d.name/wp-content/uploads/2022/07/tru-tien-3.jpg',
   },
   {
     id: 8,
-    title: 'Gặp Lại Chị Bầu',
-    othernames: 'Gặp Lại Chị Bầu',
+    title: 'Meeting Sister Again',
+    othernames: 'Meeting Sister Again',
     rating: 8.0,
     votes: 600,
     img: 'https://hoathinh3d.name/wp-content/uploads/2022/07/tru-tien-3.jpg',
   },
   {
     id: 7,
-    title: 'Gặp Lại Chị Bầu',
-    othernames: 'Gặp Lại Chị Bầu',
+    title: 'Meeting Sister Again',
+    othernames: 'Meeting Sister Again',
     rating: 8.0,
     votes: 600,
     img: 'https://hoathinh3d.name/wp-content/uploads/2022/07/tru-tien-3.jpg',
@@ -112,23 +112,23 @@ export const TrendingSection = () => {
       <div className="flex flex-col items-start w-full mb-6 relative max-w-[1200px] mx-auto pr-2">
         <div className="inline-block w-full">
           <div className="flex items-center gap-2">
-            <span className="text-orange-500 text-2xl">
+            <span className="text-orange-500 dark:text-orange-400 text-2xl">
               <FaFire />
             </span>
             <span
-              className="font-bold text-lg text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-pink-500 tracking-wider"
+              className="font-bold text-lg text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-pink-500 dark:from-orange-400 dark:to-pink-400 tracking-wider"
               style={{ letterSpacing: 1 }}
             >
               TRENDING
             </span>
           </div>
           <div className="flex items-center w-full mt-2 gap-2">
-            <span className="h-[3px] w-[140px] bg-gradient-to-r from-orange-500 to-pink-500 rounded-full"></span>
-            <span className="h-[2px] flex-1 bg-[#23232b] opacity-60 rounded-full"></span>
+            <span className="h-[3px] w-[140px] bg-gradient-to-r from-orange-500 to-pink-500 dark:from-orange-400 dark:to-pink-400 rounded-full"></span>
+            <span className="h-[2px] flex-1 bg-gray-300 dark:bg-gray-600 opacity-60 rounded-full"></span>
           </div>
         </div>
       </div>
-      {/* Danh sách phim cuộn ngang */}
+      {/* Movie list horizontal scroll */}
       <div className="w-full max-w-[1200px] mx-auto overflow-hidden">
         <Swiper
           modules={[FreeMode, Mousewheel]}
@@ -141,9 +141,9 @@ export const TrendingSection = () => {
           {trendingMovies.map((movie, idx) => (
             <SwiperSlide key={movie.id}>
               <div className="group flex flex-col items-center w-full relative">
-                {/* Ảnh */}
+                {/* Image */}
                 <div
-                  className="relative w-full h-[300px] md:h-[340px] overflow-hidden shadow-xl transition-transform duration-300 group-hover:-translate-y-3 group-hover:scale-105 group-hover:z-10 bg-[#23232b] flex items-end"
+                  className="relative w-full h-[300px] md:h-[340px] overflow-hidden shadow-xl transition-transform duration-300 group-hover:-translate-y-3 group-hover:scale-105 group-hover:z-10 bg-gray-200 dark:bg-gray-800 flex items-end"
                   style={{
                     borderRadius: 22,
                     clipPath: clipPathStyles[idx % clipPathStyles.length],
@@ -159,17 +159,19 @@ export const TrendingSection = () => {
                       clipPath: clipPathStyles[idx % clipPathStyles.length],
                     }}
                   />
-                  <span className="absolute bottom-3 right-3 bg-black/90 text-yellow-300 font-bold text-base rounded-full px-3 py-1 shadow flex items-center gap-1">
+                  <span className="absolute bottom-3 right-3 bg-gray-800 dark:bg-black/90 text-yellow-500 dark:text-yellow-300 font-bold text-base rounded-full px-3 py-1 shadow flex items-center gap-1">
                     {movie.rating.toFixed(1)}
                   </span>
                 </div>
-                {/* Số + title + othernames */}
+                {/* Number + title + othernames */}
                 <div className="flex flex-col items-center w-full mt-4">
-                  <span className="text-5xl font-extrabold italic text-yellow-200">{idx + 1}</span>
-                  <span className="font-bold text-white text-lg mt-2 whitespace-normal break-words text-center">
+                  <span className="text-5xl font-extrabold italic text-yellow-500 dark:text-yellow-200">
+                    {idx + 1}
+                  </span>
+                  <span className="font-bold text-gray-900 dark:text-white text-lg mt-2 whitespace-normal break-words text-center">
                     {movie.title}
                   </span>
-                  <span className="text-gray-400 text-base whitespace-normal break-words text-center">
+                  <span className="text-gray-600 dark:text-gray-400 text-base whitespace-normal break-words text-center">
                     {movie.othernames}
                   </span>
                 </div>

@@ -1,11 +1,11 @@
-// Footer.js - UI component cho footer đẹp, hiện đại, responsive
+// Footer.js - UI component for beautiful, modern, responsive footer
 import React from 'react';
 
 const Footer = () => {
   return (
     <footer className="bg-[#18181c] text-gray-300 border-t border-gray-700 py-6 px-4 w-full">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        {/* Logo và tên */}
+        {/* Logo and name */}
         <div className="flex items-center gap-2">
           <img
             src={require('../../assets/Image/logo/CineBee.png')}
@@ -16,7 +16,7 @@ const Footer = () => {
             CineBee
           </span>
         </div>
-        {/* Liên kết mạng xã hội */}
+        {/* Social media links */}
         <div className="flex gap-4 text-xl">
           <a
             href="https://facebook.com"
@@ -38,7 +38,7 @@ const Footer = () => {
             <i className="fas fa-envelope"></i>
           </a>
         </div>
-        {/* Bản quyền và sitemap */}
+        {/* Copyright and sitemap */}
         <div className="flex flex-col md:flex-row items-center gap-2 text-sm">
           <span>
             © {new Date().getFullYear()}{' '}

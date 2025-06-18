@@ -1,63 +1,63 @@
 # Cinema Zino Frontend
 
-## Giới thiệu
+## Introduction
 
-Đây là dự án web xem phim trực tuyến, xây dựng với ReactJS, Redux Toolkit, Tailwind CSS và kiến trúc tách biệt UI/logic hiện đại, dễ maintain.
+This is an online movie streaming web project, built with ReactJS, Redux Toolkit, Tailwind CSS and modern separated UI/logic architecture, easy to maintain.
 
-## Cấu trúc thư mục chính
+## Main Directory Structure
 
 ```
 src/
-  assets/           # Ảnh, video, icon
+  assets/           # Images, videos, icons
   components/       # UI components (Header, Footer, Search, ...)
-  constants/        # Hằng số dùng chung
-  features/         # Custom hooks cho logic (auth, profile, ...)
+  constants/        # Common constants
+  features/         # Custom hooks for logic (auth, profile, ...)
   layouts/          # Layouts (MainLayout, AuthLayout)
-  pages/            # Các trang chính (Home, Login, Register, ...)
-  routes/           # Định nghĩa route, phân layout
-  services/         # Gọi API (authAPI, apiConfig, ...)
+  pages/            # Main pages (Home, Login, Register, ...)
+  routes/           # Route definitions, layout separation
+  services/         # API calls (authAPI, apiConfig, ...)
   store/            # Redux store, slice
-  utils/            # Hàm tiện ích (formatDate, ...)
-  App.js            # Khởi tạo app, đọc localStorage, set Redux
+  utils/            # Utility functions (formatDate, ...)
+  App.js            # Initialize app, read localStorage, set Redux
   index.js          # Entry point
 ```
 
-## Kiến trúc & Cách hoạt động
+## Architecture & How It Works
 
-- **UI (components/):** Chỉ render giao diện, nhận props/hook, không xử lý logic phức tạp.
-- **Logic (features/):** Custom hook (useLogin, useGoogleLogin, ...) xử lý gọi API, validate, toast, ...
-- **Service (services/):** Chỉ gọi API, không xử lý UI.
-- **Redux (store/):** Quản lý state toàn cục (auth, theme, ...), không gọi API trực tiếp trong UI.
-- **Layout (layouts/):** MainLayout (có Header, Footer), AuthLayout (không có Header).
-- **Route (routes/):** Phân biệt rõ route dùng layout nào, không lặp lại Header.
-- **Lưu trữ login:**
-  - Sau login thành công: lưu accessToken + user vào localStorage.
-  - Khi app load: đọc lại localStorage, set lại Redux (App.js).
-  - Khi logout: xóa localStorage, reset Redux.
+- **UI (components/):** Only renders interface, receives props/hooks, doesn't handle complex logic.
+- **Logic (features/):** Custom hooks (useLogin, useGoogleLogin, ...) handle API calls, validation, toast, ...
+- **Service (services/):** Only calls APIs, doesn't handle UI.
+- **Redux (store/):** Manages global state (auth, theme, ...), doesn't call APIs directly in UI.
+- **Layout (layouts/):** MainLayout (with Header, Footer), AuthLayout (without Header).
+- **Route (routes/):** Clearly distinguishes which routes use which layout, doesn't repeat Header.
+- **Login storage:**
+  - After successful login: save accessToken + user to localStorage.
+  - When app loads: read localStorage again, set Redux back (App.js).
+  - When logout: clear localStorage, reset Redux.
 
-## Quy trình đăng nhập/đăng xuất
+## Login/Logout Process
 
-1. **Login thành công:**
-   - Lưu accessToken và user vào localStorage.
-   - dispatch(setAuth) cập nhật Redux.
-   - (Có thể gọi fetchProfile để đồng bộ profile từ BE).
-2. **Khi F5 hoặc mở lại app:**
-   - App.js đọc localStorage, set lại Redux, giữ trạng thái đăng nhập.
+1. **Successful Login:**
+   - Save accessToken and user to localStorage.
+   - dispatch(setAuth) updates Redux.
+   - (Can call fetchProfile to sync profile from BE).
+2. **When F5 or reopen app:**
+   - App.js reads localStorage, sets Redux back, maintains login status.
 3. **Logout:**
-   - Xóa accessToken, user khỏi localStorage.
-   - dispatch(logout) reset Redux.
+   - Remove accessToken, user from localStorage.
+   - dispatch(logout) resets Redux.
 
-## Chạy dự án
+## Running the Project
 
 ```bash
 pnpm install
 pnpm start
 ```
 
-Truy cập http://localhost:3000
+Access http://localhost:3000
 
-## Ghi chú
+## Notes
 
-- Dự án sử dụng Tailwind CSS cho UI hiện đại, responsive.
-- Tách biệt UI/logic giúp dễ maintain, mở rộng, test.
-- Có thể mở rộng thêm các features khác theo mẫu đã có.
+- Project uses Tailwind CSS for modern, responsive UI.
+- Separating UI/logic helps with maintenance, expansion, testing.
+- Can expand with other features following existing patterns.

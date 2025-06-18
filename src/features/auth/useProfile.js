@@ -5,7 +5,7 @@ export const useProfile = () => {
   const dispatch = useDispatch();
   const { profile, isAuthenticated } = useSelector((state) => state.auth);
 
-  // Gọi khi cần reload profile
+  // Call when profile needs to be reloaded
   const reloadProfile = () => dispatch(fetchProfile());
 
   return { profile, isAuthenticated, reloadProfile };

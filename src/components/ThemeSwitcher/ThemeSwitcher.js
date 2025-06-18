@@ -2,16 +2,16 @@
 
 import React, { useState } from 'react';
 
-// Xoá hoặc sửa lại import cn nếu không có file utils/cn.js
+// Remove or fix cn import if utils/cn.js file doesn't exist
 // import cn from '@/cuicui/utils/cn';
-// Nếu cần hàm cn (classNames), có thể dùng 1 hàm đơn giản như sau:
+// If you need cn function (classNames), you can use a simple function like this:
 const cn = (...args) => args.filter(Boolean).join(' ');
 
 export const ThemeSwitcherButton = () => {
-  // Sử dụng useState đúng cách cho theme
+  // Use useState correctly for theme
   const [theme, setTheme] = useState('light');
 
-  // Hàm đổi theme: set class 'dark' cho <html> và lưu vào localStorage (áp dụng cho toàn hệ thống)
+  // Theme change function: set 'dark' class for <html> and save to localStorage (applies to entire system)
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
@@ -23,7 +23,7 @@ export const ThemeSwitcherButton = () => {
     localStorage.setItem('theme', newTheme);
   };
 
-  // Khi app mount, luôn đồng bộ class 'dark' trên <html> với localStorage (áp dụng cho toàn hệ thống)
+  // When app mounts, always sync 'dark' class on <html> with localStorage (applies to entire system)
   React.useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
@@ -42,7 +42,7 @@ export const ThemeSwitcherButton = () => {
       type="button"
     >
       {theme === 'dark' ? (
-        // SVG mặt trăng custom với hiệu ứng chuyển động
+        // Custom moon SVG with animation effect
         <span className="inline-block w-6 h-6 mr-1 align-middle transition-transform duration-500 group-hover:scale-110 group-active:rotate-12">
           <svg viewBox="-2 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -54,7 +54,7 @@ export const ThemeSwitcherButton = () => {
           </svg>
         </span>
       ) : (
-        // SVG mặt trời custom, hiệu ứng chuyển động
+        // Custom sun SVG with animation effect
         <span className="inline-block w-6 h-6 mr-1 align-middle transition-transform duration-500 group-hover:scale-110 group-active:rotate-12">
           <svg
             viewBox="0 0 13.546667 13.546667"

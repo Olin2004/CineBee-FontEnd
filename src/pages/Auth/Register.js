@@ -2,11 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { DateofBirth, FULLNAME, MailIcon, Password, PhoneIconImg } from '../../assets/icon/icon';
 import GoogleLoginButton from '../../components/GoogleLoginButton/GoogleLoginButton';
-import InputField from '../../components/Input/InputField .js';
+import InputField from '../../components/Input/InputField';
 import { useRegister } from '../../features/auth/useRegister';
+import { toast } from 'sonner';
 
 const Register = () => {
-  const { form, error, handleChange, handleSubmit, setSuccess, setError, loading } = useRegister();
+  const { form, error, handleChange, handleSubmit, setSuccess, setError, loading, success } = useRegister();
+
+  React.useEffect(() => {
+    if (success) {
+      toast.success(success || 'Register successful!');
+    }
+  }, [success]);
 
   return (
     <div className="min-h-screen flex font-sans">
@@ -132,7 +139,7 @@ const Register = () => {
                   ></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
                 </svg>
-                Đang đăng ký...
+                Signing up...
               </>
             ) : (
               'Sign up'

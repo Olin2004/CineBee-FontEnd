@@ -11,7 +11,7 @@ export const withOptimizedAnimation = (WrappedComponent, animationConfig = {}) =
         exit: { opacity: 0, y: -20 },
         ...animationConfig.variants,
       }),
-      [animationConfig.variants]
+      []
     );
 
     // Memoize transition
@@ -21,21 +21,24 @@ export const withOptimizedAnimation = (WrappedComponent, animationConfig = {}) =
         ease: 'easeOut',
         ...animationConfig.transition,
       }),
-      [animationConfig.transition]
+      []
     );
+
+    // Destructure handlers from props
+    const { onAnimationStart, onAnimationComplete } = props;
 
     // Memoize handlers
     const handleAnimationStart = useCallback(() => {
-      if (props.onAnimationStart) {
-        props.onAnimationStart();
+      if (onAnimationStart) {
+        onAnimationStart();
       }
-    }, [props.onAnimationStart]);
+    }, [onAnimationStart]);
 
     const handleAnimationComplete = useCallback(() => {
-      if (props.onAnimationComplete) {
-        props.onAnimationComplete();
+      if (onAnimationComplete) {
+        onAnimationComplete();
       }
-    }, [props.onAnimationComplete]);
+    }, [onAnimationComplete]);
 
     if (loading) return null;
 
