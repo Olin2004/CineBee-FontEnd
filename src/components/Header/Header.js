@@ -117,191 +117,191 @@ const Header = () => {
 
       {/* Enhanced navigation - Desktop */}
       <nav className="w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 h-16 flex items-center max-w-7xl mx-auto px-4 hidden sm:flex">
-        {navItems.map((item, idx) => (
-          <Link
-            key={item.label}
-            to={item.to}
-            className={`inline-flex items-center px-4 text-gray-700 dark:text-gray-200 font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 rounded-xl mr-2 group relative overflow-hidden
-              ${
-                idx === 0
-                  ? 'font-bold text-white bg-gradient-to-r from-purple-600 to-blue-600 shadow-lg'
-                  : 'hover:text-gray-900 dark:hover:text-white'
-              }
-            `}
-            style={{ minWidth: 120 }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 to-blue-500/0 group-hover:from-purple-500/20 group-hover:to-blue-500/20 transition-all duration-300"></div>
-            <span className="relative z-10 flex items-center">
-              {item.icon && (
-                <span className="mr-2 text-lg group-hover:scale-110 transition-transform duration-300">
-                  {item.icon}
-                </span>
-              )}
-              {item.label}
-              {item.dropdown && (
-                <span className="ml-1 text-xs group-hover:rotate-180 transition-transform duration-300">
-                  &#9660;
-                </span>
-              )}
-            </span>
-          </Link>
-        ))}
-
-        <div className="inline-flex items-center ml-2">
-          <SearchBar />
-        </div>
-
-        {/* Enhanced profile section */}
-        {isAuthenticated && profile ? (
-          <div className="relative inline-flex items-center ml-4">
-            <button
-              className="focus:outline-none group relative transform hover:scale-105 transition-all duration-300"
-              onClick={() => setProfileMenuOpen((v) => !v)}
+        <div className="flex-1 flex items-center">
+          {navItems.map((item, idx) => (
+            <Link
+              key={item.label}
+              to={item.to}
+              className={`inline-flex items-center px-4 text-gray-700 dark:text-gray-200 font-medium hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 rounded-xl mr-2 group relative overflow-hidden
+                ${
+                  idx === 0
+                    ? 'font-bold text-white bg-gradient-to-r from-purple-600 to-blue-600 shadow-lg'
+                    : 'hover:text-gray-900 dark:hover:text-white'
+                }
+              `}
+              style={{ minWidth: 120 }}
             >
-              <span className="relative block">
-                <img
-                  src={profile.avatarUrl || '/default-avatar.png'}
-                  alt="profile"
-                  className="w-10 h-10 rounded-full object-cover border-2 border-green-500 shadow-lg group-hover:ring-2 group-hover:ring-green-400 transition-all duration-300"
-                />
-                <span className="absolute bottom-0 right-0 w-4 h-4 bg-green-400 border-2 border-white rounded-full flex items-center justify-center shadow-lg">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <circle cx="6" cy="6" r="6" fill="#4ade80" />
-                    <path
-                      d="M3 6.5l2 2 4-4"
-                      stroke="#fff"
-                      strokeWidth="1.2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 to-blue-500/0 group-hover:from-purple-500/20 group-hover:to-blue-500/20 transition-all duration-300"></div>
+              <span className="relative z-10 flex items-center">
+                {item.icon && (
+                  <span className="mr-2 text-lg group-hover:scale-110 transition-transform duration-300">
+                    {item.icon}
+                  </span>
+                )}
+                {item.label}
+                {item.dropdown && (
+                  <span className="ml-1 text-xs group-hover:rotate-180 transition-transform duration-300">
+                    &#9660;
+                  </span>
+                )}
               </span>
-            </button>
-
-            {/* Enhanced dropdown menu */}
-            {profileMenuOpen && (
-              <div
-                ref={profileMenuRef}
-                className="absolute right-0 top-full mt-3 w-80 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl z-50 p-6 border border-gray-200 dark:border-gray-600 origin-top-right animate-profile-fade-slide"
+            </Link>
+          ))}
+        </div>
+        <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+          <SearchBar />
+          {/* Enhanced profile section */}
+          {isAuthenticated && profile ? (
+            <div className="relative inline-flex items-center ml-2">
+              <button
+                className="focus:outline-none group relative transform hover:scale-105 transition-all duration-300"
+                onClick={() => setProfileMenuOpen((v) => !v)}
               >
-                <div className="flex flex-col items-center mb-4">
-                  <div className="relative group/avatar">
-                    <img
-                      src={profile.avatarUrl || '/default-avatar.png'}
-                      alt="avatar"
-                      className="w-16 h-16 rounded-full border-2 border-green-500 object-cover mb-3 shadow-lg group-hover/avatar:scale-105 transition-transform duration-300"
-                    />
+                <span className="relative block">
+                  <img
+                    src={profile.avatarUrl || '/default-avatar.png'}
+                    alt="profile"
+                    className="w-10 h-10 rounded-full object-cover border-2 border-green-500 shadow-lg group-hover:ring-2 group-hover:ring-green-400 transition-all duration-300"
+                  />
+                  <span className="absolute bottom-0 right-0 w-4 h-4 bg-green-400 border-2 border-white rounded-full flex items-center justify-center shadow-lg">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                      <circle cx="6" cy="6" r="6" fill="#4ade80" />
+                      <path
+                        d="M3 6.5l2 2 4-4"
+                        stroke="#fff"
+                        strokeWidth="1.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </span>
+              </button>
+
+              {/* Enhanced dropdown menu */}
+              {profileMenuOpen && (
+                <div
+                  ref={profileMenuRef}
+                  className="absolute right-0 top-full mt-3 w-80 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl z-50 p-6 border border-gray-200 dark:border-gray-600 origin-top-right animate-profile-fade-slide"
+                >
+                  <div className="flex flex-col items-center mb-4">
+                    <div className="relative group/avatar">
+                      <img
+                        src={profile.avatarUrl || '/default-avatar.png'}
+                        alt="avatar"
+                        className="w-16 h-16 rounded-full border-2 border-green-500 object-cover mb-3 shadow-lg group-hover/avatar:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <div className="font-bold text-lg text-gray-800 dark:text-white mb-1">
+                      {profile.fullName}
+                    </div>
+                    <div className="text-xs font-semibold flex items-center gap-1 mb-2">
+                      {/* Display account status with color and icon according to status */}
+                      {(() => {
+                        const status = profile.status;
+                        if (status === 'ACTIVE') {
+                          return (
+                            <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400 shadow-sm">
+                              <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="8" fill="#4ade80" />
+                                <path
+                                  d="M5 8.5l2 2 4-4"
+                                  stroke="#fff"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                              Active now
+                            </span>
+                          );
+                        } else if (status === 'BANNED') {
+                          return (
+                            <span className="inline-flex items-center px-3 py-1 rounded-full bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400 shadow-sm">
+                              <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="8" fill="#f87171" />
+                                <path
+                                  d="M5 5l6 6M11 5l-6 6"
+                                  stroke="#fff"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                              Banned
+                            </span>
+                          );
+                        } else {
+                          return (
+                            <span className="inline-flex items-center px-3 py-1 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 shadow-sm">
+                              <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="8" fill="#a3a3a3" />
+                                <path
+                                  d="M8 5v3m0 3h.01"
+                                  stroke="#fff"
+                                  strokeWidth="1.5"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                              {status || 'Undefined'}
+                            </span>
+                          );
+                        }
+                      })()}
+                    </div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 rounded-lg px-3 py-1">
+                      ID {profile.id} | {profile.email}
+                    </div>
                   </div>
-                  <div className="font-bold text-lg text-gray-800 dark:text-white mb-1">
-                    {profile.fullName}
-                  </div>
-                  <div className="text-xs font-semibold flex items-center gap-1 mb-2">
-                    {/* Display account status with color and icon according to status */}
-                    {(() => {
-                      const status = profile.status;
-                      if (status === 'ACTIVE') {
-                        return (
-                          <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400 shadow-sm">
-                            <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 16 16">
-                              <circle cx="8" cy="8" r="8" fill="#4ade80" />
-                              <path
-                                d="M5 8.5l2 2 4-4"
-                                stroke="#fff"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                            Active now
-                          </span>
-                        );
-                      } else if (status === 'BANNED') {
-                        return (
-                          <span className="inline-flex items-center px-3 py-1 rounded-full bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-400 shadow-sm">
-                            <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 16 16">
-                              <circle cx="8" cy="8" r="8" fill="#f87171" />
-                              <path
-                                d="M5 5l6 6M11 5l-6 6"
-                                stroke="#fff"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                            Banned
-                          </span>
-                        );
-                      } else {
-                        return (
-                          <span className="inline-flex items-center px-3 py-1 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 shadow-sm">
-                            <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 16 16">
-                              <circle cx="8" cy="8" r="8" fill="#a3a3a3" />
-                              <path
-                                d="M8 5v3m0 3h.01"
-                                stroke="#fff"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                            {status || 'Undefined'}
-                          </span>
-                        );
-                      }
-                    })()}
-                  </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 rounded-lg px-3 py-1">
-                    ID {profile.id} | {profile.email}
+                  <div className="divide-y divide-gray-200 dark:divide-gray-600">
+                    <button className="w-full text-left py-3 px-4 text-gray-700 dark:text-gray-200 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-xl transition-all duration-300 flex items-center gap-3 group">
+                      <span className="material-icons text-green-500 group-hover:scale-110 transition-transform duration-300">
+                        Person
+                      </span>
+                      <span className="font-medium">Account management</span>
+                    </button>
+                    <button className="w-full text-left py-3 px-4 text-gray-700 dark:text-gray-200 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-xl transition-all duration-300 flex items-center gap-3 group">
+                      <span className="material-icons text-green-500 group-hover:scale-110 transition-transform duration-300">
+                        Settings
+                      </span>
+                      <span className="font-medium">Settings</span>
+                    </button>
+                    <button
+                      className="w-full text-left py-3 px-4 text-gray-700 dark:text-gray-200 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all duration-300 flex items-center gap-3 group"
+                      onClick={() => {
+                        localStorage.removeItem('accessToken');
+                        localStorage.removeItem('user');
+                        dispatch(logout());
+                        window.location.reload();
+                      }}
+                    >
+                      <span className="material-icons text-red-500 group-hover:scale-110 transition-transform duration-300">
+                        Logout
+                      </span>
+                      <span className="font-medium">Logout</span>
+                    </button>
                   </div>
                 </div>
-                <div className="divide-y divide-gray-200 dark:divide-gray-600">
-                  <button className="w-full text-left py-3 px-4 text-gray-700 dark:text-gray-200 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-xl transition-all duration-300 flex items-center gap-3 group">
-                    <span className="material-icons text-green-500 group-hover:scale-110 transition-transform duration-300">
-                      Person
-                    </span>
-                    <span className="font-medium">Account management</span>
-                  </button>
-                  <button className="w-full text-left py-3 px-4 text-gray-700 dark:text-gray-200 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-xl transition-all duration-300 flex items-center gap-3 group">
-                    <span className="material-icons text-green-500 group-hover:scale-110 transition-transform duration-300">
-                      Settings
-                    </span>
-                    <span className="font-medium">Settings</span>
-                  </button>
-                  <button
-                    className="w-full text-left py-3 px-4 text-gray-700 dark:text-gray-200 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all duration-300 flex items-center gap-3 group"
-                    onClick={() => {
-                      localStorage.removeItem('accessToken');
-                      localStorage.removeItem('user');
-                      dispatch(logout());
-                      window.location.reload();
-                    }}
-                  >
-                    <span className="material-icons text-red-500 group-hover:scale-110 transition-transform duration-300">
-                      Logout
-                    </span>
-                    <span className="font-medium">Logout</span>
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        ) : (
-          <>
-            <Link
-              to="/register"
-              className="inline-flex items-center ml-2 px-4 py-2 rounded-xl border-2 border-green-500 text-green-600 dark:text-green-400 font-semibold bg-transparent hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-300 transform hover:scale-105"
-            >
-              Sign up
-            </Link>
-            <Link
-              to="/login"
-              className="inline-flex items-center ml-2 px-4 py-2 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold border-2 border-green-500 hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
-            >
-              Sign in
-            </Link>
-          </>
-        )}
+              )}
+            </div>
+          ) : (
+            <>
+              <Link
+                to="/register"
+                className="inline-flex items-center ml-2 px-4 py-2 rounded-xl border-2 border-green-500 text-green-600 dark:text-green-400 font-semibold bg-transparent hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-300 transform hover:scale-105"
+              >
+                Sign up
+              </Link>
+              <Link
+                to="/login"
+                className="inline-flex items-center ml-2 px-4 py-2 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold border-2 border-green-500 hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+              >
+                Sign in
+              </Link>
+            </>
+          )}
+        </div>
       </nav>
 
       {/* Enhanced mobile drawer */}

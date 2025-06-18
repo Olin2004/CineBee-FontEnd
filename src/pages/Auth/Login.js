@@ -119,12 +119,12 @@ const Login = () => {
 
           {/* Username field with enhanced styling */}
           <div className="mb-6 group">
-            <label className="block text-white font-semibold mb-2 text-sm">Username</label>
+            <label className="block text-white font-semibold mb-2 text-sm">Username or Phone</label>
             <div className="relative">
               <input
                 {...register('username')}
                 className="w-full px-4 py-3 rounded-xl bg-white/10 text-white border border-white/20 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 transition-all duration-300 backdrop-blur-sm placeholder-gray-400"
-                placeholder="Enter your username"
+                placeholder="Enter your username or phone"
                 autoComplete="username"
               />
               <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-500/0 to-cyan-500/0 group-focus-within:from-purple-500/20 group-focus-within:to-cyan-500/20 transition-all duration-300 pointer-events-none"></div>

@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 import { DateofBirth, FULLNAME, MailIcon, Password, PhoneIconImg } from '../../assets/icon/icon';
 import GoogleLoginButton from '../../components/GoogleLoginButton/GoogleLoginButton';
 import InputField from '../../components/Input/InputField';
 import { useRegister } from '../../features/auth/useRegister';
-import { toast } from 'sonner';
 
 const Register = () => {
-  const { form, error, handleChange, handleSubmit, setSuccess, setError, loading, success } = useRegister();
+  const { form, error, handleChange, handleSubmit, setSuccess, setError, loading, success } =
+    useRegister();
 
   React.useEffect(() => {
     if (success) {
@@ -41,10 +42,20 @@ const Register = () => {
         </div>
       </div>
       {/* Right: Form */}
-      <div className="flex-1 flex items-center justify-center bg-[#1a103d]">
+      <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-[#1a103d] via-[#1e1b4b] to-[#312e81] min-h-screen relative overflow-hidden">
+        {/* Background pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `radial-gradient(circle at 25% 25%, white 1px, transparent 1px), radial-gradient(circle at 75% 75%, white 1px, transparent 1px)`,
+              backgroundSize: '50px 50px',
+            }}
+          ></div>
+        </div>
         <form
           onSubmit={handleSubmit}
-          className="w-full max-w-md bg-[#211047]/90 rounded-2xl shadow-xl px-4 sm:px-8 py-8 sm:py-10 flex flex-col gap-0"
+          className="w-full max-w-md bg-white/5 backdrop-blur-xl rounded-3xl shadow-2xl px-6 sm:px-8 py-8 sm:py-10 flex flex-col gap-0 border border-white/10 relative z-10 animate-fade-in-up"
           autoComplete="off"
         >
           <h1 className="text-4xl font-extrabold text-white mb-2 tracking-wide">SIGN IN</h1>
@@ -57,6 +68,7 @@ const Register = () => {
             value={form.email}
             onChange={handleChange}
             required
+            className="bg-white/60 text-gray-900 placeholder-gray-500 border border-white/40 rounded-xl px-4 py-3 shadow-lg focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300 backdrop-blur-md"
           />
           <InputField
             icon={<FULLNAME />}
@@ -66,6 +78,7 @@ const Register = () => {
             value={form.fullName}
             onChange={handleChange}
             required
+            className="bg-white/60 text-gray-900 placeholder-gray-500 border border-white/40 rounded-xl px-4 py-3 shadow-lg focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300 backdrop-blur-md"
           />
           <InputField
             icon={<PhoneIconImg />}
@@ -75,6 +88,7 @@ const Register = () => {
             value={form.phoneNumber}
             onChange={handleChange}
             required
+            className="bg-white/60 text-gray-900 placeholder-gray-500 border border-white/40 rounded-xl px-4 py-3 shadow-lg focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300 backdrop-blur-md"
           />
           <InputField
             icon={<Password />}
@@ -84,6 +98,7 @@ const Register = () => {
             value={form.password}
             onChange={handleChange}
             required
+            className="bg-white/60 text-gray-900 placeholder-gray-500 border border-white/40 rounded-xl px-4 py-3 shadow-lg focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300 backdrop-blur-md"
           />
           <div style={{ position: 'relative', marginBottom: 18 }}>
             <span
@@ -103,16 +118,8 @@ const Register = () => {
               value={form.dateOfBirth}
               onChange={handleChange}
               required
-              style={{
-                background: '#2d2552',
-                color: '#fff',
-                border: 'none',
-                borderRadius: 8,
-                padding: '12px 16px 12px 44px',
-                fontSize: 16,
-                width: '100%',
-                outline: 'none',
-              }}
+              className="bg-white/60 text-gray-900 placeholder-gray-500 border border-white/40 rounded-xl px-4 py-3 pl-11 shadow-lg focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all duration-300 backdrop-blur-md"
+              style={{ paddingLeft: 44, fontSize: 16 }}
             />
           </div>
           {error && <div className="text-red-400 text-sm mt-2 mb-1">{error}</div>}
