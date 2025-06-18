@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
+import { Slide, toast } from 'react-toastify';
 import CustomSuccessToast from '../../components/ui/Toast';
 import { MESSAGES } from '../../constants/messages';
 import { getCaptcha, login } from '../../services/authAPI';
-import { setAuth } from '../../store/authSlice';
+import { fetchProfile, setAuth } from '../../store/authSlice';
 export function useLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -26,46 +26,47 @@ export function useLogin() {
     }
   };
 
-  // Call captcha when mount
+  // Gọi captcha khi mount
   useEffect(() => {
     fetchCaptcha();
   }, []);
 
+  // Gọi lại captcha khi submit form (trước khi login)
   const handleLogin = async (data) => {
-    setLoading(true);
     setError('');
-
+    setSuccess('');
+    setLoading(true);
     try {
-      // Call captcha again when submitting form (before login)
-      await fetchCaptcha();
-
-      const res = await login({
-        email: data.email,
+      const payload = {
+        username: data.username,
         password: data.password,
-        captchaKey: captchaKey, // get from the most recent fetchCaptcha
-        captcha: data.captcha, // user just entered (correct field name is 'captcha')
+        captchaKey: captchaKey, // lấy từ lần fetchCaptcha gần nhất
+        captcha: data.captcha, // người dùng vừa nhập (đúng tên trường là 'captcha')
+      };
+      const res = await login(payload);
+      localStorage.setItem('accessToken', res.data.accessToken);
+      localStorage.setItem('profile', JSON.stringify(res.data.user)); // Lưu profile vào localStorage
+      dispatch(setAuth({ user: res.data.user, accessToken: res.data.accessToken }));
+      dispatch(fetchProfile());
+      setSuccess('Đăng nhập thành công!');
+      toast(<CustomSuccessToast title="Thành công" message="Đăng nhập thành công!" />, {
+        position: 'top-right',
+        autoClose: 1800,
+        transition: Slide,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        hideProgressBar: true,
+        style: {
+          minWidth: 320,
+          borderRadius: 12,
+          boxShadow: '0 2px 12px #0001',
+        },
       });
-
-      if (res.data.accessToken) {
-        localStorage.setItem('profile', JSON.stringify(res.data.user)); // Save profile to localStorage
-        dispatch(setAuth(res.data));
-        setSuccess('Login successful!');
-        toast(<CustomSuccessToast title="Success" message="Login successful!" />, {
-          position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-
-        // Redirect to home page
-        setTimeout(() => {
-          window.location.href = '/home-cinebee'; // Reload page to home to update header immediately
-        }, 1000);
-      }
+      window.location.href = '/home-cinebee'; // Reload lại trang về trang chủ để header cập nhật ngay
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed!');
+      setError(err.response?.data?.message || 'Đăng nhập thất bại!');
+      fetchCaptcha();
     } finally {
       setLoading(false);
     }
