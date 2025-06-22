@@ -6,6 +6,7 @@ import MainLayout from '../layouts/MainLayout';
 const Home = lazy(() => import('../pages/MainPage/Home'));
 const Login = lazy(() => import('../pages/Auth/Login'));
 const Register = lazy(() => import('../pages/Auth/Register'));
+const HighlyRated = lazy(() => import('../pages/MainPage/HighlyRated'));
 
 // Loading component
 const LoadingFallback = () => (
@@ -34,6 +35,22 @@ const userRoutes = [
         element: (
           <LazyRoute>
             <Home />
+          </LazyRoute>
+        ),
+      },
+      {
+        path: '/movies/highly-rated/page/:page',
+        element: (
+          <LazyRoute>
+            <HighlyRated />
+          </LazyRoute>
+        ),
+      },
+      {
+        path: '/movies/highly-rated',
+        element: (
+          <LazyRoute>
+            <HighlyRated />
           </LazyRoute>
         ),
       },

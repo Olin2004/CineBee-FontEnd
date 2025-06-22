@@ -1,23 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import FullScreenLoader from '../../components/Loader/FullScreenLoader';
-import { TrendingSection } from './components/Trending/TrendingBadge';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
 import WeekTabs from './components/WeekdayTabs/WeekTabs';
+const TrendingSection = lazy(() => import('./components/Trending/TrendingBadge').then(m => ({ default: m.TrendingSection })));
 
 const Home = () => {
-  const [loading, setLoading] = useState(true);
   const [contentVisible, setContentVisible] = useState(false);
 
   useEffect(() => {
     // Simulate loading, you can replace with actual fetch logic
     const timer = setTimeout(() => {
-      setLoading(false);
       // Add a small delay for smooth content transition
-      setTimeout(() => setContentVisible(true), 100);
-    }, 1500);
+      setTimeout(() => setContentVisible(true), 1);
+    }, 600);
     return () => clearTimeout(timer);
   }, []);
-
-  if (loading) return <FullScreenLoader />;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
@@ -39,17 +34,19 @@ const Home = () => {
         }`}
       >
         {/* Trending Section - fixed like banner, no horizontal scroll */}
-        <div className="animate-fade-in-up">
-          <TrendingSection />
+        <div className="animate-fade-in-up" style={{ animationDelay: '150ms' }}>
+          <Suspense fallback={<div className="w-full flex justify-center py-8">Loading trending...</div>}>
+            <TrendingSection />
+          </Suspense>
         </div>
 
         {/* Week tabs with enhanced styling */}
-        <div className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+        <div className="animate-fade-in-up" style={{ animationDelay: '300ms' }}>
           <WeekTabs />
         </div>
 
         {/* Additional content sections can be added here */}
-        <div className="animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+        <div className="animate-fade-in-up" style={{ animationDelay: '450ms' }}>
           {/* ...other parts of the home page... */}
         </div>
       </div>

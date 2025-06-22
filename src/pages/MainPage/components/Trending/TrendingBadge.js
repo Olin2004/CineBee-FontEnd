@@ -6,6 +6,7 @@ import 'swiper/css';
 import 'swiper/css/free-mode';
 import { FreeMode, Mousewheel } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import useTrendingMovies from '../../../../features/movies/trendingMovies';
 
 const clipPathStyles = [
   'polygon(94.239% 100%,5.761% 100%,5.761% 100%,4.826% 99.95%,3.94% 99.803%,3.113% 99.569%,2.358% 99.256%,1.687% 98.87%,1.111% 98.421%,.643% 97.915%,.294% 97.362%,.075% 96.768%,0 96.142%,0 3.858%,0 3.858%,.087% 3.185%,.338% 2.552%,.737% 1.968%,1.269% 1.442%,1.92% .984%,2.672% .602%,3.512% .306%,4.423% .105%,5.391% .008%,6.4% .024%,94.879% 6.625%,94.879% 6.625%,95.731% 6.732%,96.532% 6.919%,97.272% 7.178%,97.942% 7.503%,98.533% 7.887%,99.038% 8.323%,99.445% 8.805%,99.747% 9.326%,99.935% 9.88%,100% 10.459%,100% 96.142%,100% 96.142%,99.925% 96.768%,99.706% 97.362%,99.357% 97.915%,98.889% 98.421%,98.313% 98.87%,97.642% 99.256%,96.887% 99.569%,96.06% 99.803%,95.174% 99.95%,94.239% 100%)',
@@ -37,76 +38,83 @@ const TrendingBadge = ({ index, rating }) => (
 );
 
 export default TrendingBadge;
-// Temporary data for trending (used for demo, can be imported to Home.js or elsewhere)
-export const trendingMovies = [
-  {
-    id: 1,
-    title: 'Immortal Rebellion',
-    othernames: 'Xian Ni',
-    rating: 9.2,
-    votes: 1200,
-    img: 'https://hoathinh3d.name/wp-content/uploads/2022/06/dau-pha-thuong-khung-phan-5-gia-nam-hoc-vien-1-1.jpg',
-  },
-  {
-    id: 2,
-    title: 'Battle Through the Heavens',
-    othernames: 'Fights Break Sphere',
-    rating: 8.7,
-    votes: 950,
-    img: 'https://hoathinh3d.name/wp-content/uploads/2023/09/tien-nghich-3.jpg',
-  },
-  {
-    id: 3,
-    title: 'Jade Dynasty',
-    othernames: 'Jade Dynasty',
-    rating: 8.5,
-    votes: 800,
-    img: 'https://hoathinh3d.name/wp-content/uploads/2022/07/tru-tien-3.jpg',
-  },
-  {
-    id: 4,
-    title: 'Divine Record',
-    othernames: 'Mu Shen Ji',
-    rating: 8.2,
-    votes: 700,
-    img: 'https://hoathinh3d.name/wp-content/uploads/2022/07/tru-tien-3.jpg',
-  },
-  {
-    id: 5,
-    title: 'Shrouding the Heavens',
-    othernames: 'Shrouding the Heavens',
-    rating: 8.0,
-    votes: 600,
-    img: 'https://hoathinh3d.name/wp-content/uploads/2022/07/tru-tien-3.jpg',
-  },
-  {
-    id: 6,
-    title: 'Meeting Sister Again',
-    othernames: 'Meeting Sister Again',
-    rating: 8.0,
-    votes: 600,
-    img: 'https://hoathinh3d.name/wp-content/uploads/2022/07/tru-tien-3.jpg',
-  },
-  {
-    id: 8,
-    title: 'Meeting Sister Again',
-    othernames: 'Meeting Sister Again',
-    rating: 8.0,
-    votes: 600,
-    img: 'https://hoathinh3d.name/wp-content/uploads/2022/07/tru-tien-3.jpg',
-  },
-  {
-    id: 7,
-    title: 'Meeting Sister Again',
-    othernames: 'Meeting Sister Again',
-    rating: 8.0,
-    votes: 600,
-    img: 'https://hoathinh3d.name/wp-content/uploads/2022/07/tru-tien-3.jpg',
-  },
-];
 
 // Trending section component
 export const TrendingSection = () => {
+  const { movies, loading, error } = useTrendingMovies();
+
+  if (loading) {
+    // Skeleton loader for a better UX
+    return (
+      <section className="max-w-7xl mx-auto px-4 py-8 flex flex-col items-center">
+        {/* Section Header */}
+        <div className="flex flex-col items-start w-full mb-6 relative max-w-[1200px] mx-auto pr-2">
+          <div className="inline-block w-full">
+            <div className="flex items-center gap-2">
+              <span className="text-orange-500 dark:text-orange-400 text-2xl">
+                <FaFire />
+              </span>
+              <span className="font-bold text-lg text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-pink-500 dark:from-orange-400 dark:to-pink-400 tracking-wider">
+                TRENDING
+              </span>
+            </div>
+            <div className="flex items-center w-full mt-2 gap-2">
+              <span className="h-[3px] w-[140px] bg-gradient-to-r from-orange-500 to-pink-500 dark:from-orange-400 dark:to-pink-400 rounded-full"></span>
+              <span className="h-[2px] flex-1 bg-gray-300 dark:bg-gray-600 opacity-60 rounded-full"></span>
+            </div>
+          </div>
+        </div>
+        {/* Skeleton cards */}
+        <div className="w-full max-w-[1200px] mx-auto overflow-hidden">
+          <div className="flex space-x-6 animate-pulse">
+            {Array.from({ length: 5 }).map((_, idx) => (
+              <div key={idx} className="flex-shrink-0" style={{ width: 'calc(20% - 20px)' }}>
+                <div className="w-full h-[340px] bg-gray-300 dark:bg-gray-700 rounded-2xl"></div>
+                <div className="mt-4 flex flex-col items-center">
+                  <div className="h-10 w-10 bg-gray-300 dark:bg-gray-700 rounded-full"></div>
+                  <div className="h-6 w-3/4 bg-gray-300 dark:bg-gray-700 rounded mt-2"></div>
+                  <div className="h-4 w-1/2 bg-gray-300 dark:bg-gray-700 rounded mt-2"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="max-w-7xl mx-auto px-4 py-8 flex flex-col items-center">
+        <div className="flex flex-col items-start w-full mb-6 relative max-w-[1200px] mx-auto pr-2">
+          <div className="inline-block w-full">
+            <div className="flex items-center gap-2">
+              <span className="text-orange-500 dark:text-orange-400 text-2xl">
+                <FaFire />
+              </span>
+              <span
+                className="font-bold text-lg text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-pink-500 dark:from-orange-400 dark:to-pink-400 tracking-wider"
+                style={{ letterSpacing: 1 }}
+              >
+                TRENDING
+              </span>
+            </div>
+            <div className="flex items-center w-full mt-2 gap-2">
+              <span className="h-[3px] w-[140px] bg-gradient-to-r from-orange-500 to-pink-500 dark:from-orange-400 dark:to-pink-400 rounded-full"></span>
+              <span className="h-[2px] flex-1 bg-gray-300 dark:bg-gray-600 opacity-60 rounded-full"></span>
+            </div>
+          </div>
+        </div>
+        <div className="w-full max-w-[1200px] mx-auto flex justify-center items-center h-64">
+          <div className="text-center">
+            <p className="text-gray-600 dark:text-gray-400 mb-2">Không thể tải dữ liệu trending</p>
+            <p className="text-sm text-gray-500 dark:text-gray-500">{error}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="max-w-7xl mx-auto px-4 py-8 flex flex-col items-center">
       <div className="flex flex-col items-start w-full mb-6 relative max-w-[1200px] mx-auto pr-2">
@@ -132,35 +140,48 @@ export const TrendingSection = () => {
       <div className="w-full max-w-[1200px] mx-auto overflow-hidden">
         <Swiper
           modules={[FreeMode, Mousewheel]}
-          spaceBetween={24}
-          slidesPerView={5}
+          spaceBetween={16}
+          slidesPerView={1.5}
           mousewheel={true}
           grabCursor={true}
-          style={{ paddingBottom: 16 }}
+          style={{ paddingBottom: 16, paddingLeft: 4, paddingRight: 4 }}
+          breakpoints={{
+            640: {
+              slidesPerView: 2.5,
+              spaceBetween: 20,
+            },
+            768: {
+              slidesPerView: 3.5,
+              spaceBetween: 24,
+            },
+            1024: {
+              slidesPerView: 5,
+              spaceBetween: 24,
+            },
+          }}
         >
-          {trendingMovies.map((movie, idx) => (
-            <SwiperSlide key={movie.id}>
+          {movies.map((movie, idx) => (
+            <SwiperSlide key={movie.rank}>
               <div className="group flex flex-col items-center w-full relative">
                 {/* Image */}
                 <div
-                  className="relative w-full h-[300px] md:h-[340px] overflow-hidden shadow-xl transition-transform duration-300 group-hover:-translate-y-3 group-hover:scale-105 group-hover:z-10 bg-gray-200 dark:bg-gray-800 flex items-end"
+                  className="relative w-full h-[300px] md:h-[340px] overflow-hidden bg-gray-200 dark:bg-gray-800"
                   style={{
                     borderRadius: 22,
                     clipPath: clipPathStyles[idx % clipPathStyles.length],
                   }}
                 >
                   <img
-                    src={movie.img}
+                    src={movie.img || movie.posterUrl}
                     alt={movie.title}
-                    className="w-full h-full object-cover block"
+                    className="w-full h-full object-cover block shadow-lg dark:shadow-orange-900/20 transition-all duration-300 group-hover:scale-105 group-hover:shadow-2xl dark:group-hover:shadow-orange-500/30"
                     style={{
                       borderRadius: 22,
-                      boxShadow: '0 4px 24px 0 rgba(0,0,0,0.18)',
                       clipPath: clipPathStyles[idx % clipPathStyles.length],
                     }}
                   />
-                  <span className="absolute bottom-3 right-3 bg-gray-800 dark:bg-black/90 text-yellow-500 dark:text-yellow-300 font-bold text-base rounded-full px-3 py-1 shadow flex items-center gap-1">
-                    {movie.rating.toFixed(1)}
+                  <span className="absolute bottom-3 right-3 bg-gray-800 dark:bg-black/90 text-yellow-500 dark:text-yellow-300 font-bold text-base rounded-full px-3 py-1 shadow flex items-center gap-1 z-10">
+                    {movie.rating?.toFixed(1) || movie.score?.toFixed(1) || 'N/A'}
                   </span>
                 </div>
                 {/* Number + title + othernames */}
@@ -172,7 +193,7 @@ export const TrendingSection = () => {
                     {movie.title}
                   </span>
                   <span className="text-gray-600 dark:text-gray-400 text-base whitespace-normal break-words text-center">
-                    {movie.othernames}
+                    {movie.othernames || movie.alternativeTitle || movie.originalTitle}
                   </span>
                 </div>
               </div>
