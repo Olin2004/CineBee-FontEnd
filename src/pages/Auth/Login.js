@@ -24,11 +24,20 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
+    setError,
   } = useForm({
     resolver: yupResolver(schema),
   });
 
+  const captchaValue = watch('captcha');
+
   const onSubmit = (data) => {
+    if (!data.captcha || data.captcha.trim() === '') {
+      setError('captcha', { type: 'manual', message: MESSAGES.LOGIN.CAPTCHA_PLACEHOLDER });
+      toast.error(MESSAGES.LOGIN.CAPTCHA_PLACEHOLDER);
+      return;
+    }
     handleLogin(data);
     toast.success('Login successful!');
   };
@@ -255,7 +264,7 @@ const Login = () => {
           <button
             type="submit"
             className="w-full mt-6 mb-6 py-4 rounded-xl font-bold text-lg text-white bg-gradient-to-r from-purple-600 via-purple-500 to-cyan-500 shadow-lg hover:shadow-xl active:shadow-lg transition-all duration-300 transform active:scale-98 hover:scale-102 relative overflow-hidden group"
-            disabled={loading}
+            disabled={loading || !captchaValue}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             <span className="relative z-10 flex items-center justify-center">

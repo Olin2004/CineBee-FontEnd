@@ -1,6 +1,7 @@
 import React, { Suspense, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Scrollbar from 'react-smooth-scrollbar';
 import './App.css';
 import userRoutes from './routes/allRole';
 import { fetchProfile, setAuth } from './store/authSlice';
@@ -49,20 +50,22 @@ function App() {
   if (loading) return <LoadingFallback />;
 
   return (
-    <BrowserRouter>
-      <Suspense fallback={<LoadingFallback />}>
-        <Routes>
-          {userRoutes.map((route, idx) => (
-            <Route key={idx} element={route.element}>
-              {route.children &&
-                route.children.map((child, cidx) => (
-                  <Route key={cidx} path={child.path} element={child.element} />
-                ))}
-            </Route>
-          ))}
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
+    <Scrollbar damping={0.08} alwaysShowTracks>
+      <BrowserRouter>
+        <Suspense fallback={<LoadingFallback />}>
+          <Routes>
+            {userRoutes.map((route, idx) => (
+              <Route key={idx} element={route.element}>
+                {route.children &&
+                  route.children.map((child, cidx) => (
+                    <Route key={cidx} path={child.path} element={child.element} />
+                  ))}
+              </Route>
+            ))}
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    </Scrollbar>
   );
 }
 

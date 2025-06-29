@@ -30,9 +30,10 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchProfile.fulfilled, (state, action) => {
-      state.profile = action.payload;
-      // If there's an accessToken and profile returns a valid object, authenticate login
-      state.isAuthenticated = !!state.accessToken && !!action.payload && !!action.payload.id;
+      if (action.payload) {
+        const { userStatus, ...rest } = action.payload;
+        state.profile = { ...rest, status: userStatus };
+      }
     });
   },
 });

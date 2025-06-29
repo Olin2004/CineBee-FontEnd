@@ -1,6 +1,7 @@
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import App from './App';
@@ -12,10 +13,12 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <GoogleOAuthProvider clientId="254949369735-abek7ini3etgg8hn6vc9mhvt0k1mnoaj.apps.googleusercontent.com">
     <Provider store={store}>
-      <React.StrictMode>
-        <App />
-        <ToastContainer />
-      </React.StrictMode>
+      <HelmetProvider>
+        <React.StrictMode>
+          <App />
+          <ToastContainer />
+        </React.StrictMode>
+      </HelmetProvider>
     </Provider>
   </GoogleOAuthProvider>
 );

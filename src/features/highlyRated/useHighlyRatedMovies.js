@@ -14,12 +14,12 @@ export const useHighlyRatedMovies = (currentPage) => {
       try {
         setLoading(true);
         setError(null);
-        const response = await moviesAllByLikesPaged(currentPage - 1, ITEMS_PER_PAGE);
+        const response = await moviesAllByLikesPaged(currentPage, ITEMS_PER_PAGE);
         const responseData = response.data;
 
         if (responseData && responseData.pages && responseData.pages.length > 0) {
-          // Lấy đúng page hiện tại
-          setMovies(responseData.pages[currentPage - 1] || []);
+          // Luôn lấy trang hiện tại ở vị trí 0 vì API trả về mỗi lần 1 trang
+          setMovies(responseData.pages[0] || []);
           setTotalPages(responseData.totalPages);
         } else if (responseData && responseData.content) {
           // This is a fallback for a more standard paged response.

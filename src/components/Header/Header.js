@@ -15,7 +15,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import logo from '../../assets/Image/logo/CineBee.png';
 import { logout } from '../../store/authSlice';
-import ConfirmationModal from '../Modal/ConfirmationModal';
 import { SearchBar } from '../Search/Search';
 import ThemeSwitcherButton from '../ThemeSwitcher/ThemeSwitcher';
 
@@ -76,7 +75,6 @@ const Header = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('user');
     dispatch(logout());
-    setLogoutModalOpen(false);
     window.location.reload();
   };
 
@@ -167,11 +165,11 @@ const Header = () => {
                   className="focus:outline-none group relative transform hover:scale-105 transition-all duration-300"
                   onClick={() => setProfileMenuOpen((v) => !v)}
                 >
-                  <span className="relative block">
+                  <span className="relative block w-10 h-10 rounded-full overflow-hidden">
                     <img
                       src={profile.avatarUrl || '/default-avatar.png'}
                       alt="profile"
-                      className="w-10 h-10 rounded-full object-cover border-2 border-green-500 shadow-lg group-hover:ring-2 group-hover:ring-green-400 transition-all duration-300"
+                      className="w-full h-full rounded-full object-cover border-2 border-green-500 shadow-lg group-hover:ring-2 group-hover:ring-green-400 transition-all duration-300"
                     />
                     <span className="absolute bottom-0 right-0 w-4 h-4 bg-green-400 border-2 border-white rounded-full flex items-center justify-center shadow-lg">
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -199,7 +197,7 @@ const Header = () => {
                         <img
                           src={profile.avatarUrl || '/default-avatar.png'}
                           alt="avatar"
-                          className="w-16 h-16 rounded-full border-2 border-green-500 object-cover mb-3 shadow-lg group-hover/avatar:scale-105 transition-transform duration-300"
+                          className="w-16 h-16 rounded-full object-cover border-2 border-green-500 mb-3 shadow-lg group-hover/avatar:scale-105 transition-transform duration-300"
                         />
                       </div>
                       <div className="font-bold text-lg text-gray-800 dark:text-white mb-1">
@@ -208,7 +206,7 @@ const Header = () => {
                       <div className="text-xs font-semibold flex items-center gap-1 mb-2">
                         {/* Display account status with color and icon according to status */}
                         {(() => {
-                          const status = profile.status;
+                          const status = profile.userStatus;
                           if (status === 'ACTIVE') {
                             return (
                               <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400 shadow-sm">
@@ -281,7 +279,7 @@ const Header = () => {
                         className="w-full text-left py-3 px-4 text-gray-700 dark:text-gray-200 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all duration-300 flex items-center gap-3 group"
                         onClick={() => {
                           setProfileMenuOpen(false);
-                          setLogoutModalOpen(true);
+                          handleLogout();
                         }}
                       >
                         <span className="material-icons text-red-500 group-hover:scale-110 transition-transform duration-300">
@@ -297,14 +295,16 @@ const Header = () => {
               <>
                 <Link
                   to="/register"
-                  className="inline-flex items-center ml-2 px-4 py-2 rounded-xl border-2 border-green-500 text-green-600 dark:text-green-400 font-semibold bg-transparent hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-300 transform hover:scale-105"
+                  className="inline-flex items-center ml-2 h-10 px-5 text-sm rounded-2xl border-2 border-green-400 text-green-600 dark:text-green-300 font-medium bg-white/80 dark:bg-gray-900/80 hover:bg-green-50 dark:hover:bg-green-900/40 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-300 whitespace-nowrap"
                 >
+                  <i className="fas fa-user-plus mr-2 text-green-400"></i>
                   Sign up
                 </Link>
                 <Link
                   to="/login"
-                  className="inline-flex items-center ml-2 px-4 py-2 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold border-2 border-green-500 hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  className="inline-flex items-center ml-2 h-10 px-5 text-sm rounded-2xl bg-gradient-to-r from-green-400 to-green-600 text-white font-medium border-2 border-green-400 hover:from-green-500 hover:to-green-700 shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-300 whitespace-nowrap"
                 >
+                  <i className="fas fa-sign-in-alt mr-2 text-white"></i>
                   Sign in
                 </Link>
               </>
@@ -371,13 +371,6 @@ const Header = () => {
         )}
       </header>
       {scrolled && <div style={{ height: headerHeight }} />}
-      <ConfirmationModal
-        isOpen={isLogoutModalOpen}
-        onClose={() => setLogoutModalOpen(false)}
-        onConfirm={handleLogout}
-        title="Confirm Logout"
-        message="Are you sure you want to log out of your account?"
-      />
     </>
   );
 };

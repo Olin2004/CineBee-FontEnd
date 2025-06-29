@@ -41,31 +41,54 @@ export function useLogin() {
         username: data.username,
         password: data.password,
         captchaKey: captchaKey, // lấy từ lần fetchCaptcha gần nhất
-        captcha: data.captcha, // người dùng vừa nhập (đúng tên trường là 'captcha')
+        captcha: data.captcha,
       };
       const res = await login(payload);
+
+      // Kiểm tra userStatus
+      if (res.data.userStatus !== 'ACTIVE') {
+        setError(MESSAGES.LOGIN.USER_BLOCKED);
+        setLoading(false);
+        return;
+      }
+
       localStorage.setItem('accessToken', res.data.accessToken);
-      localStorage.setItem('profile', JSON.stringify(res.data.user)); // Lưu profile vào localStorage
-      dispatch(setAuth({ user: res.data.user, accessToken: res.data.accessToken }));
-      dispatch(fetchProfile());
-      setSuccess('Đăng nhập thành công!');
-      toast(<CustomSuccessToast title="Thành công" message="Đăng nhập thành công!" />, {
-        position: 'top-right',
-        autoClose: 1800,
-        transition: Slide,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        hideProgressBar: true,
-        style: {
-          minWidth: 320,
-          borderRadius: 12,
-          boxShadow: '0 2px 12px #0001',
-        },
-      });
-      window.location.href = '/home-cinebee'; // Reload lại trang về trang chủ để header cập nhật ngay
+      // Tạo object user từ các trường lẻ backend trả về
+      const user = {
+        role: res.data.role,
+        userStatus: res.data.userStatus,
+        // Thêm các trường khác nếu backend trả về (ví dụ: id, email...)
+      };
+      localStorage.setItem('profile', JSON.stringify(user));
+      dispatch(setAuth({ user, accessToken: res.data.accessToken }));
+      await dispatch(fetchProfile());
+      setSuccess(MESSAGES.LOGIN.SUCCESS);
+      toast(
+        <CustomSuccessToast title={MESSAGES.LOGIN.SUCCESS} message={MESSAGES.LOGIN.SUCCESS} />,
+        {
+          position: 'top-right',
+          autoClose: 1800,
+          transition: Slide,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          hideProgressBar: true,
+          style: {
+            minWidth: 320,
+            borderRadius: 12,
+            boxShadow: '0 2px 12px #0001',
+          },
+        }
+      );
+      // Kiểm tra role và chuyển hướng phù hợp
+      const profile = JSON.parse(localStorage.getItem('profile'));
+      if (profile && profile.role === 'ADMIN') {
+        window.location.href = '/admin/dashboard';
+      } else {
+        window.location.href = '/home-cinebee';
+      }
     } catch (err) {
-      setError(err.response?.data?.message || 'Đăng nhập thất bại!');
+      setError(err.response?.data?.message || MESSAGES.LOGIN.FAIL);
       fetchCaptcha();
     } finally {
       setLoading(false);

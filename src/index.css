@@ -283,3 +283,7 @@ input[type='date'] {
   background: #e11d48;
   clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 100%);
 }
+
+html {
+  scroll-behavior: smooth;
+}
