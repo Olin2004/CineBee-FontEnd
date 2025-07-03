@@ -1,45 +1,38 @@
+import { Skeleton } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  FaBars,
-  FaCalendarAlt,
-  FaCrown,
-  FaFilm,
-  FaHome,
-  FaListOl,
-  FaStar,
-  FaThLarge,
-  FaTicketAlt,
-  FaTimes,
-} from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
+import { FaBars, FaCalendarAlt, FaFilm, FaHome, FaStar, FaThLarge, FaTimes } from 'react-icons/fa';
+import LazyLoad from 'react-lazyload';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import logo from '../../assets/Image/logo/CineBee.png';
+import { useProfile } from '../../features/auth/useProfile';
+import { logoutUser } from '../../services/authAPI';
 import { logout } from '../../store/authSlice';
 import { SearchBar } from '../Search/Search';
 import ThemeSwitcherButton from '../ThemeSwitcher/ThemeSwitcher';
-
-const navItems = [
-  { icon: <FaHome />, label: 'Home', to: '/home-cinebee' },
-  { icon: <FaThLarge />, label: 'Genres', to: '#', dropdown: true },
-  { icon: <FaFilm />, label: 'Movies', to: '/movies/standalone-movie' },
-  { icon: <FaListOl />, label: 'Now Showing', to: '/movies/now-showing' },
-  { icon: <FaCalendarAlt />, label: 'Showtimes', to: '/movies/showtimes' },
-  { icon: <FaTicketAlt />, label: 'Paid', to: '/movies/completed' },
-  { icon: <FaCrown />, label: 'Top 10 3D', to: '/movies/top-10-3d' },
-  { icon: <FaStar />, label: 'Highly Rated', to: '/movies/highly-rated/page/1' },
-];
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [headerHeight, setHeaderHeight] = useState(0);
-  const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState(i18n.language || 'vi');
   const profileMenuRef = useRef();
   const headerRef = useRef(null);
   const dispatch = useDispatch();
-  const { isAuthenticated, profile } = useSelector((state) => state.auth);
+  const { isAuthenticated } = useSelector((state) => state.auth);
   const location = useLocation();
+  const { profile, isLoading } = useProfile();
+
+  const navItems = [
+    { icon: <FaHome />, label: t('header.home'), to: '/home-cinebee' },
+    { icon: <FaCalendarAlt />, label: t('header.showtimes'), to: '/showtimes' },
+    { icon: <FaFilm />, label: t('header.movies'), to: '/movies' },
+    { icon: <FaThLarge />, label: t('header.cinemas', 'Rạp'), to: '/cinemas' },
+    { icon: <FaStar />, label: t('header.promotions', 'Ưu đãi'), to: '/promotions' },
+  ];
 
   useEffect(() => {
     if (headerRef.current) {
@@ -71,11 +64,23 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+    } catch (e) {}
     localStorage.removeItem('accessToken');
-    localStorage.removeItem('user');
     dispatch(logout());
     window.location.reload();
+  };
+
+  const handleChangeLanguage = () => {
+    const newLang = language === 'vi' ? 'en' : 'vi';
+    setLanguage(newLang);
+    if (typeof i18n.changeLanguage === 'function') {
+      i18n.changeLanguage(newLang);
+    } else {
+      console.error('i18n.changeLanguage is not a function', i18n);
+    }
   };
 
   return (
@@ -112,8 +117,31 @@ const Header = () => {
           {/* Desktop action buttons with enhanced styling */}
           <div className="hidden sm:flex gap-2">
             <ThemeSwitcherButton />
-            <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-all duration-300 group">
-              <i className="fas fa-bookmark text-xl text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors duration-300" />
+            {/* Nút chuyển đổi ngôn ngữ chỉ hiện 1 cờ, click để đổi */}
+            <button
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-all duration-300 flex items-center gap-1 group"
+              title={t('header.change_language', 'Đổi ngôn ngữ')}
+              onClick={handleChangeLanguage}
+            >
+              {language === 'vi' ? (
+                <>
+                  <img
+                    src="https://flagcdn.com/w20/vn.png"
+                    alt="VI"
+                    className="w-5 h-5 rounded shadow"
+                  />
+                  <span className="font-semibold text-gray-700 dark:text-gray-200 text-sm">VI</span>
+                </>
+              ) : (
+                <>
+                  <img
+                    src="https://flagcdn.com/w20/gb.png"
+                    alt="EN"
+                    className="w-5 h-5 rounded shadow"
+                  />
+                  <span className="font-semibold text-gray-700 dark:text-gray-200 text-sm">EN</span>
+                </>
+              )}
             </button>
             <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-all duration-300 group">
               <i className="fas fa-sign-out-alt text-xl text-gray-700 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white transition-colors duration-300" />
@@ -133,15 +161,15 @@ const Header = () => {
                   rounded-xl border border-gray-700/20 dark:border-gray-200/10
                   bg-gray-900/80 dark:bg-gray-800/80
                   text-white dark:text-gray-200 font-medium
-                  hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600
-                  hover:text-white hover:shadow-xl hover:shadow-purple-400/30
+                  hover:bg-gradient-to-r hover:from-red-600 hover:to-yellow-500
+                  hover:text-white hover:shadow-xl hover:shadow-red-400/30
                   hover:scale-105 active:scale-98
                   transition-all duration-300
                   max-w-[160px] min-w-[100px] text-center
                   group
                   ${
                     location.pathname === item.to
-                      ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold shadow-lg scale-105'
+                      ? 'bg-gradient-to-r from-red-600 to-yellow-500 text-white font-bold shadow-lg scale-105'
                       : ''
                   }
                 `}
@@ -152,25 +180,34 @@ const Header = () => {
                   {item.icon}
                 </span>
                 <span className="truncate">{item.label}</span>
-                {item.dropdown && <span className="ml-1 text-xs">&#9660;</span>}
               </Link>
             ))}
+            {/* Nút Đặt vé nổi bật */}
+            <Link
+              to="/booking"
+              className="ml-4 px-6 py-2 rounded-2xl bg-gradient-to-r from-yellow-400 to-red-500 text-white font-bold shadow-lg hover:from-yellow-500 hover:to-red-600 transition-all duration-300 text-lg border-0 focus:outline-none focus:ring-2 focus:ring-yellow-300"
+              style={{ minWidth: 120 }}
+            >
+              {t('banner.book_now')}
+            </Link>
           </div>
           <div className="flex items-center gap-2 flex-shrink-0 ml-2">
             <SearchBar />
             {/* Enhanced profile section */}
-            {isAuthenticated && profile ? (
+            {isAuthenticated && !isLoading && profile ? (
               <div className="relative inline-flex items-center ml-2">
                 <button
                   className="focus:outline-none group relative transform hover:scale-105 transition-all duration-300"
                   onClick={() => setProfileMenuOpen((v) => !v)}
                 >
                   <span className="relative block w-10 h-10 rounded-full overflow-hidden">
-                    <img
-                      src={profile.avatarUrl || '/default-avatar.png'}
-                      alt="profile"
-                      className="w-full h-full rounded-full object-cover border-2 border-green-500 shadow-lg group-hover:ring-2 group-hover:ring-green-400 transition-all duration-300"
-                    />
+                    <LazyLoad height={40} once offset={20}>
+                      <img
+                        src={profile.avatarUrl || '/default-avatar.png'}
+                        alt="profile"
+                        className="w-full h-full rounded-full object-cover border-2 border-green-500 shadow-lg group-hover:ring-2 group-hover:ring-green-400 transition-all duration-300"
+                      />
+                    </LazyLoad>
                     <span className="absolute bottom-0 right-0 w-4 h-4 bg-green-400 border-2 border-white rounded-full flex items-center justify-center shadow-lg">
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                         <circle cx="6" cy="6" r="6" fill="#4ade80" />
@@ -275,6 +312,16 @@ const Header = () => {
                         </span>
                         <span className="font-medium">Settings</span>
                       </button>
+                      <Link
+                        to="/my-tickets"
+                        className="w-full text-left py-3 px-4 text-blue-600 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-xl transition-all duration-300 flex items-center gap-3 group no-underline"
+                        onClick={() => setProfileMenuOpen(false)}
+                      >
+                        <span className="material-icons text-blue-500 group-hover:scale-110 transition-transform duration-300">
+                          confirmation_number
+                        </span>
+                        <span className="font-medium">Lịch sử vé</span>
+                      </Link>
                       <button
                         className="w-full text-left py-3 px-4 text-gray-700 dark:text-gray-200 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all duration-300 flex items-center gap-3 group"
                         onClick={() => {
@@ -291,6 +338,8 @@ const Header = () => {
                   </div>
                 )}
               </div>
+            ) : isLoading ? (
+              <Skeleton.Avatar active size={40} shape="circle" />
             ) : (
               <>
                 <Link
@@ -341,11 +390,6 @@ const Header = () => {
                     </span>
                   )}
                   {item.label}
-                  {item.dropdown && (
-                    <span className="ml-auto text-xs group-hover:rotate-180 transition-transform duration-300">
-                      &#9660;
-                    </span>
-                  )}
                 </Link>
               ))}
               <div className="my-4">

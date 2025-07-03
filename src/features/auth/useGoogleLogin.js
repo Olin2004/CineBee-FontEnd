@@ -1,16 +1,20 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Slide, toast } from 'react-toastify';
 import CustomSuccessToast from '../../components/ui/Toast';
 import { MESSAGES } from '../../constants/messages';
 import { loginGoogle } from '../../services/authAPI';
-import { setAuth } from '../../store/authSlice';
+import { fetchProfile, setAuth } from '../../store/authSlice';
 
 export function useGoogleLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   // Helper: get error message by userStatus
   const getUserStatusError = (status) => {
@@ -52,10 +56,9 @@ export function useGoogleLogin() {
         return;
       }
       localStorage.setItem('accessToken', res.data.accessToken);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
-      dispatch(setAuth({ user: res.data.user, accessToken: res.data.accessToken }));
-
-      // dispatch(fetchProfile());
+      dispatch(setAuth({ accessToken: res.data.accessToken }));
+      await dispatch(fetchProfile());
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
       setSuccess(MESSAGES.LOGIN.SUCCESS);
       toast(<CustomSuccessToast title="Success" message={MESSAGES.LOGIN.SUCCESS} />, {
         position: 'top-right',
@@ -71,8 +74,7 @@ export function useGoogleLogin() {
           boxShadow: '0 2px 12px #0001',
         },
       });
-      // Reload page to home to update header immediately
-      window.location.href = '/home-cinebee'; // Reload page to home to update header immediately
+      navigate('/home-cinebee', { replace: true });
     } catch (err) {
       setLoading(false);
       const errMsg =

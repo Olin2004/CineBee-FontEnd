@@ -1,12 +1,18 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchProfile } from '../../store/authSlice';
+import { useQuery } from '@tanstack/react-query';
+import { getProfile } from '../../services/authAPI';
 
 export const useProfile = () => {
-  const dispatch = useDispatch();
-  const { profile, isAuthenticated } = useSelector((state) => state.auth);
+  const {
+    data: profile,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
+    queryKey: ['profile'],
+    queryFn: getProfile,
+    staleTime: 5 * 60 * 1000, // cache 5 phút
+    retry: 1,
+  });
 
-  // Call when profile needs to be reloaded
-  const reloadProfile = () => dispatch(fetchProfile());
-
-  return { profile, isAuthenticated, reloadProfile };
+  return { profile, isLoading, isError, reloadProfile: refetch };
 };

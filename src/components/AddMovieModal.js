@@ -1,12 +1,14 @@
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, message, Modal, Select, Upload } from 'antd';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { addMovieNew } from '../services/moviesAPI';
 
 const { TextArea } = Input;
 const { Option } = Select;
 
 const AddMovieModal = ({ visible, onCancel, onSuccess }) => {
+  const { t } = useTranslation();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [posterFile, setPosterFile] = useState(null);
@@ -73,72 +75,72 @@ const AddMovieModal = ({ visible, onCancel, onSuccess }) => {
 
   return (
     <Modal
-      title="Thêm Phim Mới"
+      title={t('movie.add_movie')}
       open={visible}
       onCancel={handleCancel}
       onOk={handleSubmit}
       confirmLoading={loading}
       width={600}
-      okText="Thêm Phim"
-      cancelText="Hủy"
+      okText={t('common.add')}
+      cancelText={t('common.cancel')}
     >
       <Form form={form} layout="vertical" initialValues={{}}>
         <Form.Item
           name="title"
-          label="Tên phim"
-          rules={[{ required: true, message: 'Vui lòng nhập tên phim!' }]}
+          label={t('movie.title')}
+          rules={[{ required: true, message: t('common.error', 'Vui lòng nhập tên phim!') }]}
         >
-          <Input placeholder="Nhập tên phim" />
+          <Input placeholder={t('movie.title')} />
         </Form.Item>
 
-        <Form.Item name="othernames" label="Tên khác">
-          <Input placeholder="Tên phim bằng tiếng Anh hoặc tên khác" />
+        <Form.Item name="othernames" label={t('movie.othernames')}>
+          <Input placeholder={t('movie.othernames')} />
         </Form.Item>
 
         <div style={{ display: 'flex', gap: 16 }}>
-          <Form.Item name="basePrice" label="Giá vé cơ bản (VNĐ)" rules={[]} style={{ flex: 1 }}>
+          <Form.Item name="basePrice" label={t('movie.base_price')} rules={[]} style={{ flex: 1 }}>
             <InputNumber placeholder="100000" min={0} style={{ width: '100%' }} />
           </Form.Item>
 
-          <Form.Item name="duration" label="Thời lượng (phút)" rules={[]} style={{ flex: 1 }}>
+          <Form.Item name="duration" label={t('movie.duration')} rules={[]} style={{ flex: 1 }}>
             <InputNumber placeholder="120" min={1} style={{ width: '100%' }} />
           </Form.Item>
         </div>
 
-        <Form.Item name="genre" label="Thể loại" rules={[]}>
-          <Select placeholder="Chọn thể loại phim" allowClear>
-            <Option value="Action">Action</Option>
-            <Option value="Adventure">Adventure</Option>
-            <Option value="Animation">Animation</Option>
-            <Option value="Comedy">Comedy</Option>
-            <Option value="Crime">Crime</Option>
-            <Option value="Documentary">Documentary</Option>
-            <Option value="Drama">Drama</Option>
-            <Option value="Family">Family</Option>
-            <Option value="Fantasy">Fantasy</Option>
-            <Option value="Horror">Horror</Option>
-            <Option value="Mystery">Mystery</Option>
-            <Option value="Romance">Romance</Option>
-            <Option value="Sci-Fi">Sci-Fi</Option>
-            <Option value="Thriller">Thriller</Option>
-            <Option value="War">War</Option>
+        <Form.Item name="genre" label={t('movie.genre')} rules={[]}>
+          <Select placeholder={t('movie.genre')} allowClear>
+            <Option value="Action">{t('movie.genre_action', 'Action')}</Option>
+            <Option value="Adventure">{t('movie.genre_adventure', 'Adventure')}</Option>
+            <Option value="Animation">{t('movie.genre_animation', 'Animation')}</Option>
+            <Option value="Comedy">{t('movie.genre_comedy', 'Comedy')}</Option>
+            <Option value="Crime">{t('movie.genre_crime', 'Crime')}</Option>
+            <Option value="Documentary">{t('movie.genre_documentary', 'Documentary')}</Option>
+            <Option value="Drama">{t('movie.genre_drama', 'Drama')}</Option>
+            <Option value="Family">{t('movie.genre_family', 'Family')}</Option>
+            <Option value="Fantasy">{t('movie.genre_fantasy', 'Fantasy')}</Option>
+            <Option value="Horror">{t('movie.genre_horror', 'Horror')}</Option>
+            <Option value="Mystery">{t('movie.genre_mystery', 'Mystery')}</Option>
+            <Option value="Romance">{t('movie.genre_romance', 'Romance')}</Option>
+            <Option value="Sci-Fi">{t('movie.genre_scifi', 'Sci-Fi')}</Option>
+            <Option value="Thriller">{t('movie.genre_thriller', 'Thriller')}</Option>
+            <Option value="War">{t('movie.genre_war', 'War')}</Option>
           </Select>
         </Form.Item>
 
-        <Form.Item name="description" label="Mô tả">
-          <TextArea rows={4} placeholder="Mô tả ngắn gọn về nội dung phim..." />
+        <Form.Item name="description" label={t('movie.description')}>
+          <TextArea rows={4} placeholder={t('movie.description')} />
         </Form.Item>
 
-        <Form.Item name="posterUrl" label="Link ảnh poster (nếu không upload file)">
+        <Form.Item name="posterUrl" label={t('movie.poster_url')}>
           <Input placeholder="https://..." />
         </Form.Item>
 
-        <Form.Item label="Poster phim">
+        <Form.Item label={t('movie.poster_upload')}>
           <Upload {...uploadProps} listType="picture">
-            <Button icon={<UploadOutlined />}>Chọn ảnh poster</Button>
+            <Button icon={<UploadOutlined />}>{t('movie.poster_upload')}</Button>
           </Upload>
           <div style={{ fontSize: 12, color: '#666', marginTop: 8 }}>
-            Chấp nhận: JPG, PNG, GIF. Tối đa: 5MB
+            {t('movie.poster_note', 'Chấp nhận: JPG, PNG, GIF. Tối đa: 5MB')}
           </div>
         </Form.Item>
       </Form>

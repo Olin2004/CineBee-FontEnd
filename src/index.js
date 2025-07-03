@@ -5,6 +5,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import App from './App';
+import './i18n';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import store from './store';

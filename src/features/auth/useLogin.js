@@ -1,10 +1,13 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Slide, toast } from 'react-toastify';
 import CustomSuccessToast from '../../components/ui/Toast';
 import { MESSAGES } from '../../constants/messages';
 import { getCaptcha, login } from '../../services/authAPI';
 import { fetchProfile, setAuth } from '../../store/authSlice';
+
 export function useLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -12,6 +15,8 @@ export function useLogin() {
   const [captchaImg, setCaptchaImg] = useState(null);
   const [captchaKey, setCaptchaKey] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const fetchCaptcha = async () => {
     setLoading(true);
@@ -53,15 +58,9 @@ export function useLogin() {
       }
 
       localStorage.setItem('accessToken', res.data.accessToken);
-      // Tạo object user từ các trường lẻ backend trả về
-      const user = {
-        role: res.data.role,
-        userStatus: res.data.userStatus,
-        // Thêm các trường khác nếu backend trả về (ví dụ: id, email...)
-      };
-      localStorage.setItem('profile', JSON.stringify(user));
-      dispatch(setAuth({ user, accessToken: res.data.accessToken }));
+      dispatch(setAuth({ accessToken: res.data.accessToken }));
       await dispatch(fetchProfile());
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
       setSuccess(MESSAGES.LOGIN.SUCCESS);
       toast(
         <CustomSuccessToast title={MESSAGES.LOGIN.SUCCESS} message={MESSAGES.LOGIN.SUCCESS} />,
@@ -81,11 +80,10 @@ export function useLogin() {
         }
       );
       // Kiểm tra role và chuyển hướng phù hợp
-      const profile = JSON.parse(localStorage.getItem('profile'));
-      if (profile && profile.role === 'ADMIN') {
-        window.location.href = '/admin/dashboard';
+      if (res.data.role === 'ADMIN') {
+        navigate('/admin/dashboard', { replace: true });
       } else {
-        window.location.href = '/home-cinebee';
+        navigate('/home-cinebee', { replace: true });
       }
     } catch (err) {
       setError(err.response?.data?.message || MESSAGES.LOGIN.FAIL);

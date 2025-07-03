@@ -1,8 +1,22 @@
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
+import SwiperCore from 'swiper';
+import 'swiper/css';
+import 'swiper/css/effect-fade';
+import 'swiper/css/pagination';
+import {
+  Autoplay as AutoplayModules,
+  EffectFade as EffectFadeModules,
+  Pagination as PaginationModules,
+} from 'swiper/modules';
 import SEO from '../../components/SEO/SEO';
-import WeekTabs from './components/WeekdayTabs/WeekTabs';
+import Banner from './components/Banner';
+import WeekTabs from './components/WeekTabs';
+SwiperCore.use([AutoplayModules, PaginationModules, EffectFadeModules]);
+
 const TrendingSection = lazy(() =>
-  import('./components/Trending/TrendingBadge').then((m) => ({ default: m.TrendingSection }))
+  import('./components/TrendingBadge').then((m) => ({ default: m.TrendingSection }))
 );
 
 const Home = () => {
@@ -11,9 +25,9 @@ const Home = () => {
   useEffect(() => {
     // Simulate loading, you can replace with actual fetch logic
     const timer = setTimeout(() => {
-      // Add a small delay for smooth content transition
       setTimeout(() => setContentVisible(true), 1);
     }, 600);
+    AOS.init({ duration: 800, once: true });
     return () => clearTimeout(timer);
   }, []);
 
@@ -26,6 +40,9 @@ const Home = () => {
         type="website"
       />
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+        {/* Banner lớn - carousel phim hot/ưu đãi */}
+        <Banner />
+
         {/* Background pattern for visual interest */}
         <div className="fixed inset-0 opacity-5 pointer-events-none">
           <div
@@ -43,23 +60,28 @@ const Home = () => {
             contentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          {/* Trending Section - fixed like banner, no horizontal scroll */}
-          <div className="animate-fade-in-up" style={{ animationDelay: '150ms' }}>
+          {/* Trending Section - tối ưu UI */}
+          <div
+            className="animate-fade-in-up"
+            style={{ animationDelay: '150ms' }}
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
             <Suspense
               fallback={<div className="w-full flex justify-center py-8">Loading trending...</div>}
             >
-              <TrendingSection />
+              <TrendingSection showBookButton />
             </Suspense>
           </div>
 
           {/* Week tabs with enhanced styling */}
-          <div className="animate-fade-in-up" style={{ animationDelay: '300ms' }}>
+          <div
+            className="animate-fade-in-up"
+            style={{ animationDelay: '350ms' }}
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
             <WeekTabs />
-          </div>
-
-          {/* Additional content sections can be added here */}
-          <div className="animate-fade-in-up" style={{ animationDelay: '450ms' }}>
-            {/* ...other parts of the home page... */}
           </div>
         </div>
       </div>

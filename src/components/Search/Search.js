@@ -1,6 +1,7 @@
 'use client';
+import debounce from 'lodash/debounce';
 import { SearchIcon } from 'lucide-react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMovieSuggestions } from '../../features/movies/useMovieSuggestions';
 
@@ -24,10 +25,16 @@ export const SearchBar = () => {
   const { fetchSuggestions } = useMovieSuggestions();
   const navigate = useNavigate();
 
+  // Debounce fetchSuggestions
+  const debouncedFetchSuggestions = React.useMemo(
+    () => debounce(fetchSuggestions, 300),
+    [fetchSuggestions]
+  );
+
   const handleChange = (e) => {
     const value = e.target.value;
     setSearchValue(value);
-    fetchSuggestions(value);
+    debouncedFetchSuggestions(value);
   };
 
   const handleKeyDown = (e) => {

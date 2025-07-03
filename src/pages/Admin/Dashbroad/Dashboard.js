@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
   FaChartBar,
   FaCog,
@@ -16,14 +16,14 @@ import {
   FaUsers,
   FaUserShield,
 } from 'react-icons/fa';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
-import BarHorizontalChart from '../../components/BarHorizontalChart';
-import CounterUp from '../../components/CounterUp';
-import DoughnutChart from '../../components/DoughnutChart';
-import StatisticsLineChart from '../../components/StatisticsLineChart';
-import { logoutUser } from '../../services/authAPI';
-import { logout } from '../../store/authSlice';
+import BarHorizontalChart from '../../../components/BarHorizontalChart';
+import CounterUp from '../../../components/CounterUp';
+import DoughnutChart from '../../../components/DoughnutChart';
+import StatisticsLineChart from '../../../components/StatisticsLineChart';
+import { logoutUser } from '../../../services/authAPI';
+import { logout } from '../../../store/authSlice';
 import AdminMovies from './AdminMovies';
 
 const SidebarLink = ({ icon, text, to, active, danger, onClick }) => {
@@ -50,14 +50,7 @@ const SidebarLink = ({ icon, text, to, active, danger, onClick }) => {
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const logoutBtnRef = useRef();
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const profile = useSelector((state) => state.auth?.profile) || {
-    fullName: 'Admin',
-    avatarUrl: '',
-  };
   const handleLogout = async () => {
     try {
       await logoutUser();
@@ -66,12 +59,6 @@ const Dashboard = () => {
     dispatch(logout());
     window.location.href = '/login';
   };
-
-  const genreStats = [
-    { genre: 'Action', count: 12 },
-    { genre: 'Drama', count: 8 },
-    { genre: 'Sci-fi', count: 5 },
-  ];
 
   const lineLabels = ['Jan 01', 'Jan 02', 'Jan 03', 'Jan 04', 'Jan 05', 'Jan 06'];
   const lineData = [120, 200, 150, 220, 180, 250];
@@ -97,7 +84,7 @@ const Dashboard = () => {
           {/* Logo & Brand */}
           <div className="flex flex-col items-center mb-8">
             <img
-              src={require('../../assets/Image/logo/CineBee.png')}
+              src={require('../../../assets/Image/logo/CineBee.png')}
               alt="CineBee"
               className="h-14 w-auto mb-2 drop-shadow-xl"
             />

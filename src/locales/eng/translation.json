@@ -1,0 +1,106 @@
+{
+  "signup": {
+    "fill_required": "Please fill in all required fields.",
+    "invalid_email": "Invalid email format.",
+    "password_short": "Password must be at least 6 characters.",
+    "success": "Sign up successful!",
+    "fail": "Sign up failed. Please try again."
+  },
+  "login": {
+    "fill_required": "Please enter all information and captcha code.",
+    "captcha_load_fail": "Cannot load captcha. Please try again.",
+    "success": "Login successful!",
+    "fail": "Login failed. Please try again.",
+    "captcha_refresh": "Refresh captcha",
+    "captcha_loading": "Loading...",
+    "captcha_placeholder": "Enter captcha code",
+    "user_blocked": "Your account has been blocked or is inactive!"
+  },
+  "status": {
+    "active": "Active now",
+    "banned": "Banned",
+    "undefined": "Undefined"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "users": "User Management",
+    "movies": "Movie Management",
+    "statistics": "Statistics",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "header": {
+    "home": "Home",
+    "genres": "Genres",
+    "movies": "Movies",
+    "now_showing": "Now Showing",
+    "showtimes": "Showtimes",
+    "paid": "Paid",
+    "top_10_3d": "Top 10 3D",
+    "highly_rated": "Highly Rated",
+    "account_management": "Account management",
+    "settings": "Settings",
+    "logout": "Logout",
+    "cinemas": "Cinemas",
+    "promotions": "Promotions"
+  },
+  "common": {
+    "logout": "Logout",
+    "error": "An error occurred. Please try again.",
+    "success": "Operation successful!",
+    "confirm": "Are you sure?",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "update": "Update",
+    "create": "Create",
+    "search": "Search",
+    "no_data": "No data available."
+  },
+  "form": {
+    "email": "Email",
+    "full_name": "Full name",
+    "phone": "Phone number",
+    "password": "Password",
+    "confirm_password": "Confirm password",
+    "date_of_birth": "Date of birth",
+    "submit": "Submit",
+    "register": "Register",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "banner": {
+    "special_offer": "SPECIAL OFFER",
+    "buy_2_get_1": "Buy 2 tickets, get 1 popcorn free, online only!",
+    "book_now": "Book now"
+  },
+  "movie": {
+    "title": "Title",
+    "othernames": "Other names",
+    "base_price": "Base price (VND)",
+    "duration": "Duration (minutes)",
+    "genre": "Genre",
+    "description": "Description",
+    "poster_url": "Poster URL",
+    "poster_upload": "Upload poster"
+  },
+  "modal": {
+    "delete_movie_title": "Delete movie",
+    "delete_movie_confirm": "Are you sure you want to delete this movie? This action cannot be undone!"
+  },
+  "weektabs": {
+    "new": { "label": "New", "sub": "Updated" },
+    "mon": { "label": "Mon", "sub": "Monday" },
+    "tue": { "label": "Tue", "sub": "Tuesday" },
+    "wed": { "label": "Wed", "sub": "Wednesday" },
+    "thu": { "label": "Thu", "sub": "Thursday" },
+    "fri": { "label": "Fri", "sub": "Friday" },
+    "sat": { "label": "Sat", "sub": "Saturday" },
+    "sun": { "label": "Sun", "sub": "Sunday" }
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark"
+  }
+}

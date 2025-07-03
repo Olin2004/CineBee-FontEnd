@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React, { Suspense, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -13,31 +14,20 @@ const LoadingFallback = () => (
   </div>
 );
 
+const queryClient = new QueryClient();
+
 function App() {
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
-    let user = null;
-    try {
-      const userStr = localStorage.getItem('user');
-      if (userStr) user = JSON.parse(userStr);
-    } catch (e) {
-      user = null;
-    }
 
     const initializeAuth = async () => {
       try {
-        if (accessToken && user) {
-          dispatch(setAuth({ user, accessToken }));
+        if (accessToken) {
+          dispatch(setAuth({ accessToken }));
           await dispatch(fetchProfile());
-        } else if (accessToken && !user) {
-          const res = await dispatch(fetchProfile()).unwrap();
-          if (res) {
-            localStorage.setItem('user', JSON.stringify(res));
-            dispatch(setAuth({ user: res, accessToken }));
-          }
         }
       } finally {
         setLoading(false);
@@ -50,22 +40,24 @@ function App() {
   if (loading) return <LoadingFallback />;
 
   return (
-    <Scrollbar damping={0.08} alwaysShowTracks>
-      <BrowserRouter>
-        <Suspense fallback={<LoadingFallback />}>
-          <Routes>
-            {userRoutes.map((route, idx) => (
-              <Route key={idx} element={route.element}>
-                {route.children &&
-                  route.children.map((child, cidx) => (
-                    <Route key={cidx} path={child.path} element={child.element} />
-                  ))}
-              </Route>
-            ))}
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
-    </Scrollbar>
+    <QueryClientProvider client={queryClient}>
+      <Scrollbar damping={0.08} alwaysShowTracks>
+        <BrowserRouter>
+          <Suspense fallback={<LoadingFallback />}>
+            <Routes>
+              {userRoutes.map((route, idx) => (
+                <Route key={idx} element={route.element}>
+                  {route.children &&
+                    route.children.map((child, cidx) => (
+                      <Route key={cidx} path={child.path} element={child.element} />
+                    ))}
+                </Route>
+              ))}
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+      </Scrollbar>
+    </QueryClientProvider>
   );
 }
 

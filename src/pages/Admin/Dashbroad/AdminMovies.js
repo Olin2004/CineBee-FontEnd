@@ -1,9 +1,9 @@
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Input, message, Modal, Space, Table, Tag } from 'antd';
 import React, { useEffect, useState } from 'react';
-import AddMovieModal from '../../components/AddMovieModal';
+import AddMovieModal from '../../../components/AddMovieModal';
 
-import { moviesAllByLikesPaged } from '../../services/moviesAPI';
+import { moviesAllByLikesPaged } from '../../../services/moviesAPI';
 
 const columnsBase = (onEdit) => [
   {
@@ -63,8 +63,6 @@ const columnsBase = (onEdit) => [
 
 export default function AdminMovies() {
   const [showAddModal, setShowAddModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedMovie, setSelectedMovie] = useState(null);
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [deleteModal, setDeleteModal] = useState({ open: false, movie: null });
@@ -97,15 +95,8 @@ export default function AdminMovies() {
     fetchMovies(); // reload lại danh sách phim sau khi thêm
   };
 
-  const handleEditMovieSuccess = () => {
-    setShowEditModal(false);
-    setSelectedMovie(null);
-    fetchMovies(); // reload lại danh sách phim sau khi sửa
-  };
-
   const handleEdit = (movie) => {
-    setSelectedMovie(movie);
-    setShowEditModal(true);
+    setShowAddModal(false);
   };
 
   const handleDelete = (movie) => {

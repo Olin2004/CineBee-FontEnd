@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 // Remove or fix cn import if utils/cn.js file doesn't exist
 // import cn from '@/cuicui/utils/cn';
@@ -8,6 +9,7 @@ import React, { useState } from 'react';
 const cn = (...args) => args.filter(Boolean).join(' ');
 
 export const ThemeSwitcherButton = () => {
+  const { t } = useTranslation();
   // Use useState correctly for theme
   const [theme, setTheme] = useState('light');
 
@@ -91,7 +93,7 @@ export const ThemeSwitcherButton = () => {
               : 'translate-y-0 opacity-100 blur-0'
           )}
         >
-          Dark
+          {t('theme.dark', 'Dark')}
         </span>
         <span
           className={cn(
@@ -101,7 +103,7 @@ export const ThemeSwitcherButton = () => {
               : 'translate-y-0 opacity-100 blur-0'
           )}
         >
-          Light
+          {t('theme.light', 'Light')}
         </span>
       </span>
     </button>

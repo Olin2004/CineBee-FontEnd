@@ -1,0 +1,106 @@
+{
+  "signup": {
+    "fill_required": "Vui lòng điền đầy đủ các trường bắt buộc.",
+    "invalid_email": "Định dạng email không hợp lệ.",
+    "password_short": "Mật khẩu phải có ít nhất 6 ký tự.",
+    "success": "Đăng ký thành công!",
+    "fail": "Đăng ký thất bại. Vui lòng thử lại."
+  },
+  "login": {
+    "fill_required": "Vui lòng nhập đầy đủ thông tin và mã xác nhận.",
+    "captcha_load_fail": "Không thể tải mã xác nhận. Vui lòng thử lại.",
+    "success": "Đăng nhập thành công!",
+    "fail": "Đăng nhập thất bại. Vui lòng thử lại.",
+    "captcha_refresh": "Làm mới mã xác nhận",
+    "captcha_loading": "Đang tải...",
+    "captcha_placeholder": "Nhập mã xác nhận",
+    "user_blocked": "Tài khoản của bạn đã bị khóa hoặc chưa kích hoạt!"
+  },
+  "status": {
+    "active": "Đang hoạt động",
+    "banned": "Bị khóa",
+    "undefined": "Không xác định"
+  },
+  "sidebar": {
+    "dashboard": "Bảng điều khiển",
+    "users": "Quản lý người dùng",
+    "movies": "Quản lý phim",
+    "statistics": "Thống kê",
+    "settings": "Cài đặt",
+    "logout": "Đăng xuất"
+  },
+  "header": {
+    "home": "Trang chủ",
+    "genres": "Thể loại",
+    "movies": "Phim",
+    "now_showing": "Đang chiếu",
+    "showtimes": "Lịch chiếu",
+    "paid": "Đã thanh toán",
+    "top_10_3d": "Top 10 3D",
+    "highly_rated": "Đánh giá cao",
+    "account_management": "Quản lý tài khoản",
+    "settings": "Cài đặt",
+    "logout": "Đăng xuất",
+    "cinemas": "Rạp",
+    "promotions": "Ưu đãi"
+  },
+  "common": {
+    "logout": "Đăng xuất",
+    "error": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "success": "Thao tác thành công!",
+    "confirm": "Bạn có chắc không?",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "edit": "Chỉnh sửa",
+    "delete": "Xóa",
+    "update": "Cập nhật",
+    "create": "Tạo mới",
+    "search": "Tìm kiếm",
+    "no_data": "Không có dữ liệu."
+  },
+  "form": {
+    "email": "Email",
+    "full_name": "Họ và tên",
+    "phone": "Số điện thoại",
+    "password": "Mật khẩu",
+    "confirm_password": "Xác nhận mật khẩu",
+    "date_of_birth": "Ngày sinh",
+    "submit": "Gửi",
+    "register": "Đăng ký",
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất"
+  },
+  "banner": {
+    "special_offer": "ƯU ĐÃI ĐẶC BIỆT",
+    "buy_2_get_1": "Mua 2 vé tặng 1 bắp rang, chỉ áp dụng online!",
+    "book_now": "Đặt vé ngay"
+  },
+  "movie": {
+    "title": "Tên phim",
+    "othernames": "Tên khác",
+    "base_price": "Giá vé cơ bản (VNĐ)",
+    "duration": "Thời lượng (phút)",
+    "genre": "Thể loại",
+    "description": "Mô tả",
+    "poster_url": "Link poster",
+    "poster_upload": "Tải lên poster"
+  },
+  "modal": {
+    "delete_movie_title": "Xóa phim",
+    "delete_movie_confirm": "Bạn có chắc muốn xóa phim này? Hành động không thể hoàn tác!"
+  },
+  "weektabs": {
+    "new": { "label": "Mới", "sub": "Cập nhật" },
+    "mon": { "label": "T2", "sub": "Thứ hai" },
+    "tue": { "label": "T3", "sub": "Thứ ba" },
+    "wed": { "label": "T4", "sub": "Thứ tư" },
+    "thu": { "label": "T5", "sub": "Thứ năm" },
+    "fri": { "label": "T6", "sub": "Thứ sáu" },
+    "sat": { "label": "T7", "sub": "Thứ bảy" },
+    "sun": { "label": "CN", "sub": "Chủ nhật" }
+  },
+  "theme": {
+    "light": "Sáng",
+    "dark": "Tối"
+  }
+}

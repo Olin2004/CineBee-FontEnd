@@ -8,8 +8,9 @@ const Home = lazy(() => import('../pages/MainPage/Home'));
 const Login = lazy(() => import('../pages/Auth/Login'));
 const Register = lazy(() => import('../pages/Auth/Register'));
 const HighlyRated = lazy(() => import('../pages/MainPage/HighlyRated'));
-const Dashboard = lazy(() => import('../pages/Admin/Dashboard'));
+const Dashboard = lazy(() => import('../pages/Admin/Dashbroad/Dashboard'));
 const SearchResultPage = lazy(() => import('../pages/MainPage/SearchResultPage'));
+const MyTickets = lazy(() => import('../pages/MainPage/MyTickets'));
 
 // Loading component
 const LoadingFallback = () => (
@@ -75,6 +76,14 @@ const userRoutes = [
         element: (
           <LazyRoute>
             <SearchResultPage />
+          </LazyRoute>
+        ),
+      },
+      {
+        path: '/my-tickets',
+        element: (
+          <LazyRoute>
+            <MyTickets />
           </LazyRoute>
         ),
       },
