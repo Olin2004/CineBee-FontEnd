@@ -1,12 +1,13 @@
 // TrendingBadge.js
 // Badge displaying trending status, beautiful, reusable
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaFire } from 'react-icons/fa';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import { FreeMode, Mousewheel } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import TrailerModal from '../../../components/TrailerModal';
 import useTrendingMovies from '../../../features/movies/trendingMovies';
 
 const clipPathStyles = [
@@ -38,12 +39,19 @@ const TrendingBadge = ({ index, rating }) => (
   </div>
 );
 
+// Danh sách 2 trailer mẫu
+const sampleTrailers = [
+  'https://www.youtube.com/watch?v=Pf6V-7GvdUQ&t=1s',
+  'https://www.youtube.com/watch?v=8X-UrrWL7g8',
+];
+
 export default TrendingBadge;
 
 // Trending section component
 export const TrendingSection = ({ showBookButton }) => {
   const { t } = useTranslation();
   const { movies, loading, error } = useTrendingMovies();
+  const [trailer, setTrailer] = useState({ open: false, url: '', title: '', movie: null });
 
   if (loading) {
     // Skeleton loader for a better UX
@@ -173,13 +181,41 @@ export const TrendingSection = ({ showBookButton }) => {
                       clipPath: clipPathStyles[idx % clipPathStyles.length],
                     }}
                   />
+                  {/* Nút play trailer */}
+                  <button
+                    className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20"
+                    onClick={() =>
+                      setTrailer({
+                        open: true,
+                        url: sampleTrailers[idx % sampleTrailers.length],
+                        title: movie.title,
+                        movie,
+                      })
+                    }
+                    tabIndex={-1}
+                    aria-label="Xem trailer"
+                    type="button"
+                  >
+                    <span
+                      className="bg-white/60 rounded-full p-2 text-xl text-pink-600 shadow-md hover:scale-110 transition-transform duration-200 backdrop-blur-sm flex items-center justify-center"
+                      style={{
+                        boxShadow: '0 2px 8px #0003',
+                        width: 40,
+                        height: 40,
+                        minWidth: 40,
+                        minHeight: 40,
+                      }}
+                    >
+                      ▶
+                    </span>
+                  </button>
                   <span className="absolute bottom-3 right-3 bg-gray-800 dark:bg-black/90 text-yellow-500 dark:text-yellow-300 font-bold text-base rounded-full px-3 py-1 shadow flex items-center gap-1 z-10">
                     {movie.rating?.toFixed(1) || movie.score?.toFixed(1) || 'N/A'}
                   </span>
                   {showBookButton && (
                     <a
                       href={`/booking/${movie.id}`}
-                      className="absolute bottom-3 left-3 px-4 py-2 rounded-lg bg-gradient-to-r from-yellow-400 to-red-500 text-white font-bold shadow-lg hover:from-yellow-500 hover:to-red-600 transition-all duration-300 text-base border-0 focus:outline-none focus:ring-2 focus:ring-yellow-300 z-20 opacity-0 group-hover:opacity-100 pointer-events-auto"
+                      className="absolute bottom-3 left-3 px-2 py-1 rounded-md bg-gradient-to-r from-yellow-400 to-red-500 text-white font-bold shadow-lg hover:from-yellow-500 hover:to-red-600 transition-all duration-300 text-sm border-0 focus:outline-none focus:ring-2 focus:ring-yellow-300 z-20 opacity-0 group-hover:opacity-100 pointer-events-auto"
                       style={{ opacity: 0.95 }}
                     >
                       {t('banner.book_now')}
@@ -203,6 +239,16 @@ export const TrendingSection = ({ showBookButton }) => {
           ))}
         </Swiper>
       </div>
+      {/* Modal trailer */}
+      {trailer.open && (
+        <TrailerModal
+          open={trailer.open}
+          url={trailer.url}
+          title={trailer.title}
+          movie={trailer.movie}
+          onClose={() => setTrailer({ open: false, url: '', title: '', movie: null })}
+        />
+      )}
     </section>
   );
 };

@@ -1,7 +1,4 @@
 import { useEffect, useState } from 'react';
-import { moviesAllByLikesPaged } from '../../services/moviesAPI';
-
-const ITEMS_PER_PAGE = 20;
 
 export const useHighlyRatedMovies = (currentPage) => {
   const [movies, setMovies] = useState([]);
@@ -14,8 +11,12 @@ export const useHighlyRatedMovies = (currentPage) => {
       try {
         setLoading(true);
         setError(null);
-        const response = await moviesAllByLikesPaged(currentPage, ITEMS_PER_PAGE);
-        const responseData = response.data;
+        // const response = await moviesAllByLikesPaged(currentPage, ITEMS_PER_PAGE);
+        const responseData = {
+          pages: [[]],
+          totalPages: 1,
+          content: [],
+        };
 
         if (responseData && responseData.pages && responseData.pages.length > 0) {
           // Luôn lấy trang hiện tại ở vị trí 0 vì API trả về mỗi lần 1 trang

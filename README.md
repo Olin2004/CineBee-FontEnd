@@ -30,28 +30,32 @@ src/
 - **Redux (store/):** Manages global state (auth, theme, ...), doesn't call APIs directly in UI.
 - **Layout (layouts/):** MainLayout (with Header, Footer), AuthLayout (without Header).
 - **Route (routes/):** Clearly distinguishes which routes use which layout, doesn't repeat Header.
-- **Login storage:**
-  - After successful login: save accessToken + user to localStorage.
-  - When app loads: read localStorage again, set Redux back (App.js).
-  - When logout: clear localStorage, reset Redux.
+- **Authentication:**
+  - Uses HTTP-only cookies for secure authentication.
+  - No tokens stored in localStorage for security.
+  - Automatic cookie handling with `withCredentials: true`.
 
 ## Login/Logout Process
 
 1. **Successful Login:**
-   - Save accessToken and user to localStorage.
-   - dispatch(setAuth) updates Redux.
-   - (Can call fetchProfile to sync profile from BE).
+   - Backend sets HTTP-only cookies automatically.
+   - Frontend calls API with `withCredentials: true`.
+   - dispatch(setAuth) updates Redux state.
+   - fetchProfile() validates authentication status.
 2. **When F5 or reopen app:**
-   - App.js reads localStorage, sets Redux back, maintains login status.
+   - App.js automatically calls fetchProfile() to check authentication.
+   - If cookies are valid, user stays logged in.
+   - If cookies are invalid/expired, user is logged out.
 3. **Logout:**
-   - Remove accessToken, user from localStorage.
-   - dispatch(logout) resets Redux.
+   - Backend clears HTTP-only cookies via logout API.
+   - dispatch(logout) resets Redux state.
+   - No localStorage cleanup needed.
 
 ## Running the Project
 
 ```bash
-pnpm install
-pnpm start
+npm i -f
+npm start
 ```
 
 Access http://localhost:3000

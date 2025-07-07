@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import SwiperCore from 'swiper';
 import 'swiper/css';
@@ -11,35 +11,9 @@ import {
   Pagination as PaginationModules,
 } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { getBannerActive } from '../../../services/bannerAPI';
 
 SwiperCore.use([AutoplayModules, PaginationModules, EffectFadeModules]);
-
-const defaultBanners = [
-  {
-    img: 'https://files.betacorp.vn/media/images/2025/06/26/1702-x-621-143544-260625-61.png',
-    title: 'BANNER ƯU ĐÃI 1',
-    desc: 'Khuyến mãi cực hot, đặt vé ngay để nhận ưu đãi!',
-    link: '/promotions',
-  },
-  {
-    img: 'https://files.betacorp.vn/media/images/2025/06/23/1702wx621h-5-103522-230625-29.jpg',
-    title: 'BANNER ƯU ĐÃI 2',
-    desc: 'Ưu đãi tốt nghiệp, nhận quà hấp dẫn khi đặt vé!',
-    link: '/promotions',
-  },
-  {
-    img: 'https://files.betacorp.vn/media/images/2025/07/02/1702wx621h-6-090916-020725-21.jpg',
-    title: 'ƯU ĐÃI ĐẶC BIỆT',
-    desc: 'Mua 2 vé tặng 1 bắp rang, chỉ áp dụng online!',
-    link: '/promotions',
-  },
-  {
-    img: 'https://iguov8nhvyobj.vcdn.cloud/media/banner/cache/1/b58515f018eb873dafa430b6f9ae0c1e/9/8/980wx448h_4_-min_2.jpg',
-    title: 'ƯU ĐÃI ĐẶC BIỆT',
-    desc: 'Mua 2 vé tặng 1 bắp rang, chỉ áp dụng online!',
-    link: '/promotions',
-  },
-];
 
 const variants = {
   initial: { opacity: 0, y: 40 },
@@ -47,10 +21,26 @@ const variants = {
   exit: { opacity: 0, y: -40, transition: { duration: 0.4, ease: 'easeIn' } },
 };
 
-const Banner = ({ banners = defaultBanners }) => {
+const Banner = () => {
   const { t } = useTranslation();
-  const [activeIndex, setActiveIndex] = React.useState(0);
-  const swiperRef = React.useRef(null);
+  const [banners, setBanners] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const swiperRef = useRef(null);
+
+  useEffect(() => {
+    const fetchBanners = async () => {
+      try {
+        const res = await getBannerActive();
+        // Dữ liệu trả về là mảng các banner, lọc active === true
+        const data = Array.isArray(res.data) ? res.data : [];
+        const filtered = data.filter((b) => b.active === true);
+        setBanners(filtered);
+      } catch (e) {
+        setBanners([]);
+      }
+    };
+    fetchBanners();
+  }, []);
 
   const handlePrev = () => {
     if (swiperRef.current) {
@@ -62,6 +52,8 @@ const Banner = ({ banners = defaultBanners }) => {
       swiperRef.current.slideNext();
     }
   };
+
+  if (!banners || banners.length === 0) return null;
 
   return (
     <div className="w-full max-w-7xl mx-auto pt-4 pb-8 relative" data-aos="fade-up">
@@ -102,10 +94,10 @@ const Banner = ({ banners = defaultBanners }) => {
         }}
       >
         {banners.map((banner, i) => (
-          <SwiperSlide key={banner.title || banner.img}>
+          <SwiperSlide key={banner.id}>
             <div className="relative w-full h-[220px] md:h-[400px]">
               <motion.img
-                src={banner.img}
+                src={banner.bannerUrl}
                 alt={banner.title}
                 className="w-full h-full object-cover object-center rounded-3xl shadow-2xl"
                 style={{ display: 'block' }}
@@ -127,24 +119,26 @@ const Banner = ({ banners = defaultBanners }) => {
                     exit="exit"
                     variants={variants}
                   >
-                    <h2 className="text-2xl md:text-4xl font-extrabold text-white drop-shadow-lg mb-1">
-                      {t('banner.special_offer')}
+                    <h2 className="text-lg md:text-2xl font-extrabold mb-1 drop-shadow-lg bg-gradient-to-r from-yellow-300 via-pink-400 to-red-500 bg-clip-text text-transparent">
+                      {banner.title}
                     </h2>
                     <p
-                      className="text-base md:text-lg text-white/90 font-medium drop-shadow mb-3"
-                      style={{ maxWidth: '80%' }}
+                      className="text-sm md:text-base font-medium mb-3"
+                      style={{
+                        maxWidth: '80%',
+                        color: 'rgba(255, 230, 150, 0.97)',
+                        textShadow: '0 2px 8px rgba(0,0,0,0.25), 0 0 8px #FFD700',
+                      }}
                     >
-                      {t('banner.buy_2_get_1')}
+                      {banner.description}
                     </p>
-                    {banner.link && (
-                      <a
-                        href={banner.link}
-                        className="inline-block px-7 py-3 rounded-2xl bg-gradient-to-r from-yellow-400 to-pink-500 text-white font-bold text-lg shadow-xl hover:from-yellow-500 hover:to-pink-600 transition-all duration-300 border-0 focus:outline-none focus:ring-2 focus:ring-yellow-300"
-                        style={{ opacity: 0.97 }}
-                      >
-                        {t('banner.book_now')}
-                      </a>
-                    )}
+                    <a
+                      href={banner.link || '/booking'}
+                      className="inline-block px-7 py-3 rounded-2xl bg-gradient-to-r from-yellow-400 to-pink-500 text-white font-bold text-lg shadow-xl hover:from-yellow-500 hover:to-pink-600 transition-all duration-300 border-0 focus:outline-none focus:ring-2 focus:ring-yellow-300"
+                      style={{ opacity: 0.97 }}
+                    >
+                      {t('banner.book_now')}
+                    </a>
                   </motion.div>
                 )}
               </AnimatePresence>

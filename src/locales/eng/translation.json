@@ -4,7 +4,8 @@
     "invalid_email": "Invalid email format.",
     "password_short": "Password must be at least 6 characters.",
     "success": "Sign up successful!",
-    "fail": "Sign up failed. Please try again."
+    "fail": "Sign up failed. Please try again.",
+    "have_account": "Already have an account?"
   },
   "login": {
     "fill_required": "Please enter all information and captcha code.",
@@ -14,7 +15,8 @@
     "captcha_refresh": "Refresh captcha",
     "captcha_loading": "Loading...",
     "captcha_placeholder": "Enter captcha code",
-    "user_blocked": "Your account has been blocked or is inactive!"
+    "user_blocked": "Your account has been blocked or is inactive!",
+    "no_account": "Don't have an account?"
   },
   "status": {
     "active": "Active now",

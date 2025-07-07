@@ -1,17 +1,15 @@
 import { api } from './apiConfig';
 import {
   ENDPOINTS_ADD_MOVIE_NEW,
-  ENDPOINTS_MOVIES_ALL_BY_LIKES_PAGED,
+  ENDPOINTS_DELETE_MOVIE,
+  ENDPOINTS_GET_LIST_MOVIES,
   ENDPOINTS_SEARCH_MOVIES,
   ENDPOINTS_TRENDING_MOVIES,
+  ENDPOINTS_UPDATE_MOVIE,
 } from './endpointsAPI';
 
 export const trendingMovies = async () => {
   return api.get(ENDPOINTS_TRENDING_MOVIES);
-};
-
-export const moviesAllByLikesPaged = async (page, size) => {
-  return api.get(ENDPOINTS_MOVIES_ALL_BY_LIKES_PAGED, { params: { page, size } });
 };
 
 export const searchMovies = async (title) => {
@@ -25,27 +23,41 @@ export const addMovieNew = async (movieData, posterFile) => {
   if (posterFile) {
     formData.append('posterImageFile', posterFile);
   }
-  const accessToken = localStorage.getItem('accessToken'); 
 
   return api.post(ENDPOINTS_ADD_MOVIE_NEW, formData, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+    withCredentials: true,
   });
 };
 
 export const updateMovie = async (movieId, movieData, posterFile) => {
   const formData = new FormData();
-  formData.append('info', JSON.stringify(movieData));
   if (posterFile) {
+    formData.append('info', JSON.stringify(movieData));
     formData.append('posterImageFile', posterFile);
+  } else if (movieData.posterUrl && Object.keys(movieData).length === 1) {
+    formData.append('info', JSON.stringify({ posterUrl: movieData.posterUrl }));
+  } else {
+    formData.append('info', JSON.stringify(movieData));
   }
-  const accessToken = localStorage.getItem('accessToken');
-  return api.post(`/movies/update-film?id=${movieId}`, formData, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+  return api.post(`${ENDPOINTS_UPDATE_MOVIE}?id=${movieId}`, formData, {
+    withCredentials: true,
   });
 };
 
-//
+//http://localhost:8080/api/movies/list-movies?page=2&size=20
+export const getListMovies = async (page, size) => {
+  return api.get(ENDPOINTS_GET_LIST_MOVIES, {
+    params: { page, size },
+    withCredentials: true,
+  });
+};
+
+export const deleteMovie = async (movieId) => {
+  return api.post(
+    `${ENDPOINTS_DELETE_MOVIE}?id=${movieId}`,
+    {},
+    {
+      withCredentials: true,
+    }
+  );
+};

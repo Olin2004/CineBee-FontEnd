@@ -57,8 +57,7 @@ export function useLogin() {
         return;
       }
 
-      localStorage.setItem('accessToken', res.data.accessToken);
-      dispatch(setAuth({ accessToken: res.data.accessToken }));
+      dispatch(setAuth({ isAuthenticated: true }));
       await dispatch(fetchProfile());
       queryClient.invalidateQueries({ queryKey: ['profile'] });
       setSuccess(MESSAGES.LOGIN.SUCCESS);
@@ -79,12 +78,16 @@ export function useLogin() {
           },
         }
       );
-      // Kiểm tra role và chuyển hướng phù hợp
-      if (res.data.role === 'ADMIN') {
+      // Lấy role từ profile sau khi fetchProfile
+      const profile = queryClient.getQueryData(['profile']);
+      const userRole = profile?.role || res.data.role;
+      console.log('Profile:', profile);
+      console.log('userRole:', userRole);
+      if (userRole === 'ADMIN') {
         navigate('/admin/dashboard', { replace: true });
-      } else {
+      } else if (userRole) {
         navigate('/home-cinebee', { replace: true });
-      }
+      } // Nếu không có role thì không chuyển hướng
     } catch (err) {
       setError(err.response?.data?.message || MESSAGES.LOGIN.FAIL);
       fetchCaptcha();

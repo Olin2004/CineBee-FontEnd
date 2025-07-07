@@ -30,8 +30,8 @@ const Register = () => {
   return (
     <>
       <Helmet>
-        <title>{t('signup.register')} | CineBee</title>
-        <meta name="description" content={t('signup.register') + ' ' + t('banner.book_now')} />
+        <title>{t('form.register')} | CineBee</title>
+        <meta name="description" content={t('form.register') + ' ' + t('banner.book_now')} />
         <meta property="og:title" content="Đăng ký CineBee" />
         <meta
           property="og:description"
@@ -73,10 +73,10 @@ const Register = () => {
             >
               <div className="text-center mb-6">
                 <h1 className="text-4xl font-extrabold text-white mb-2 tracking-wide bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                  {t('signup.register')}
+                  {t('form.register')}
                 </h1>
                 <div className="text-sm text-gray-300 font-medium mb-2">
-                  {t('signup.register')} {t('banner.book_now')}
+                  {t('form.register')} {t('banner.book_now')}
                 </div>
               </div>
               {/* Email */}
@@ -254,7 +254,7 @@ const Register = () => {
                 className="w-full py-3 rounded-xl bg-gradient-to-r from-pink-500 to-yellow-400 text-white font-bold text-lg shadow-lg hover:from-pink-600 hover:to-yellow-500 transition-all duration-300 mt-2 mb-2"
                 disabled={loading}
               >
-                {loading ? t('common.loading', 'Đang đăng ký...') : t('signup.register')}
+                {loading ? t('common.loading', 'Đang đăng ký...') : t('form.register')}
               </button>
               {/* Login link */}
               <div className="text-center mt-2">
@@ -262,7 +262,7 @@ const Register = () => {
                   {t('signup.have_account', 'Đã có tài khoản?')}
                 </span>
                 <Link to="/login" className="text-pink-300 hover:underline text-sm font-semibold">
-                  {t('login.login')}
+                  {t('form.login')}
                 </Link>
               </div>
             </form>

@@ -11,6 +11,8 @@ const HighlyRated = lazy(() => import('../pages/MainPage/HighlyRated'));
 const Dashboard = lazy(() => import('../pages/Admin/Dashbroad/Dashboard'));
 const SearchResultPage = lazy(() => import('../pages/MainPage/SearchResultPage'));
 const MyTickets = lazy(() => import('../pages/MainPage/MyTickets'));
+const BookingPage = lazy(() => import('../pages/MainPage/Booking'));
+const ForgetPassword = lazy(() => import('../pages/Auth/ForgetPassword'));
 
 // Loading component
 const LoadingFallback = () => (
@@ -87,6 +89,14 @@ const userRoutes = [
           </LazyRoute>
         ),
       },
+      {
+        path: '/booking',
+        element: (
+          <LazyRoute>
+            <BookingPage />
+          </LazyRoute>
+        ),
+      },
     ],
   },
   {
@@ -105,6 +115,14 @@ const userRoutes = [
         element: (
           <LazyRoute>
             <Register />
+          </LazyRoute>
+        ),
+      },
+      {
+        path: '/forgot-password',
+        element: (
+          <LazyRoute>
+            <ForgetPassword />
           </LazyRoute>
         ),
       },

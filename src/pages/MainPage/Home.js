@@ -1,6 +1,8 @@
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import SwiperCore from 'swiper';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
@@ -21,15 +23,21 @@ const TrendingSection = lazy(() =>
 
 const Home = () => {
   const [contentVisible, setContentVisible] = useState(false);
+  const profile = useSelector((state) => state.auth.profile);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (profile?.role === 'ADMIN') {
+      navigate('/admin/dashboard', { replace: true });
+      return;
+    }
     // Simulate loading, you can replace with actual fetch logic
     const timer = setTimeout(() => {
       setTimeout(() => setContentVisible(true), 1);
     }, 600);
     AOS.init({ duration: 800, once: true });
     return () => clearTimeout(timer);
-  }, []);
+  }, [profile, navigate]);
 
   return (
     <>

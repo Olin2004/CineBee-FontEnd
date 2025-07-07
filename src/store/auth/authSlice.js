@@ -3,7 +3,6 @@ import { getProfile } from '../services/authAPI';
 
 const initialState = {
   user: null,
-  accessToken: null,
   profile: null,
   isAuthenticated: false,
 };
@@ -18,12 +17,10 @@ const authSlice = createSlice({
   reducers: {
     setAuth(state, action) {
       state.user = action.payload.user;
-      state.accessToken = action.payload.accessToken;
-      state.isAuthenticated = true;
+      state.isAuthenticated = action.payload.isAuthenticated || true;
     },
     logout(state) {
       state.user = null;
-      state.accessToken = null;
       state.profile = null;
       state.isAuthenticated = false;
     },
@@ -33,6 +30,8 @@ const authSlice = createSlice({
       if (action.payload) {
         const { userStatus, ...rest } = action.payload;
         state.profile = { ...rest, status: userStatus };
+        // Nếu profile trả về data hợp lệ thì user đã đăng nhập
+        state.isAuthenticated = !!action.payload && !!action.payload.id;
       }
     });
   },

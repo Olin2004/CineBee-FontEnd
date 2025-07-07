@@ -73,8 +73,8 @@ const Login = () => {
   return (
     <>
       <Helmet>
-        <title>{t('login.login')} | CineBee</title>
-        <meta name="description" content={t('login.login') + ' ' + t('banner.book_now')} />
+        <title>{t('form.login')} | CineBee</title>
+        <meta name="description" content={t('form.login') + ' ' + t('banner.book_now')} />
         <meta property="og:title" content="Đăng nhập CineBee" />
         <meta
           property="og:description"
@@ -105,10 +105,10 @@ const Login = () => {
           >
             <div className="text-center mb-6">
               <h1 className="text-4xl font-extrabold text-white mb-2 tracking-wide bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                {t('login.login')}
+                {t('form.login')}
               </h1>
               <div className="text-sm text-gray-300 font-medium mb-2">
-                {t('login.login')} {t('banner.book_now')}
+                {t('form.login')} {t('banner.book_now')}
               </div>
             </div>
             {/* Username */}
@@ -281,7 +281,7 @@ const Login = () => {
               className="w-full py-3 rounded-xl bg-gradient-to-r from-pink-500 to-yellow-400 text-white font-bold text-lg shadow-lg hover:from-pink-600 hover:to-yellow-500 transition-all duration-300 mt-2 mb-2"
               disabled={loading}
             >
-              {loading ? t('common.loading', 'Đang đăng nhập...') : t('login.login')}
+              {loading ? t('common.loading', 'Đang đăng nhập...') : t('form.login')}
             </button>
             {/* Register link */}
             <div className="text-center mt-2">
@@ -289,7 +289,7 @@ const Login = () => {
                 {t('login.no_account', 'Chưa có tài khoản?')}
               </span>
               <Link to="/register" className="text-pink-300 hover:underline text-sm font-semibold">
-                {t('signup.register')}
+                {t('form.register')}
               </Link>
             </div>
           </form>

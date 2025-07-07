@@ -287,3 +287,29 @@ input[type='date'] {
 html {
   scroll-behavior: smooth;
 }
+
+@keyframes modalShow {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(40px);
+    box-shadow: 0 0 0 #0000;
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1.02) translateY(-4px);
+    box-shadow: 0 8px 32px #ffd60055;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    box-shadow: 0 8px 32px #ffd60099;
+  }
+}
+.animate-modalShow {
+  animation: modalShow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.trailer-modal-glow:hover {
+  box-shadow: 0 0 0 4px #ffd60055, 0 8px 32px #ffd60099;
+  border-color: #ffd600;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}

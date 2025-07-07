@@ -1,31 +1,42 @@
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import LogoutIcon from '@mui/icons-material/Logout';
-import MovieIcon from '@mui/icons-material/Movie';
-import PeopleIcon from '@mui/icons-material/People';
-import {
-  AppBar,
-  Avatar,
-  Box,
-  Drawer,
-  Fade,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-  Toolbar,
-  Typography,
-} from '@mui/material';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import CategoryIcon from '@mui/icons-material/Category';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import RestoreIcon from '@mui/icons-material/Restore';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import StoreIcon from '@mui/icons-material/Store';
+import { AppBar, Avatar, Box, Fade, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Sidebar from './Sidebar';
 
 const drawerWidth = 220;
 
-const menuItems = [
-  { text: 'Dashboard', icon: <DashboardIcon />, path: '/admin/dashboard' },
-  { text: 'Movies', icon: <MovieIcon />, path: '/admin/movies' },
-  { text: 'Users', icon: <PeopleIcon />, path: '/admin/users' },
+const menuGroups = [
+  {
+    label: 'QUẢN LÝ',
+    items: [
+      { text: 'Sản Phẩm', icon: <CategoryIcon />, path: '/admin/products' },
+      { text: 'Khuyến Mãi', icon: <LocalOfferIcon />, path: '/admin/promotions' },
+      { text: 'Danh Mục', icon: <CategoryIcon />, path: '/admin/categories' },
+      { text: 'Nhà Cung Cấp', icon: <StoreIcon />, path: '/admin/suppliers' },
+      { text: 'Đơn Hàng', icon: <ShoppingCartIcon />, path: '/admin/orders' },
+    ],
+  },
+  {
+    label: 'BÁO CÁO',
+    items: [
+      { text: 'Báo Cáo Doanh Thu', icon: <BarChartIcon />, path: '/admin/revenue-report' },
+      { text: 'Báo Cáo Sản Phẩm', icon: <BarChartIcon />, path: '/admin/product-report' },
+      { text: 'Báo Cáo Khách Hàng', icon: <PeopleAltIcon />, path: '/admin/customer-report' },
+      { text: 'Nhật Ký & Theo Dõi', icon: <RestoreIcon />, path: '/admin/logs' },
+    ],
+  },
+  {
+    label: 'HỆ THỐNG',
+    items: [{ text: 'Sao Lưu & Phục Hồi', icon: <SettingsIcon />, path: '/admin/backup' }],
+  },
 ];
 
 export default function AdminLayout({ children }) {
@@ -39,65 +50,7 @@ export default function AdminLayout({ children }) {
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh', background: '#f4f6f8' }}>
       {/* Sidebar */}
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-            background: '#212b36',
-            color: '#fff',
-            transition: 'background 0.3s',
-          },
-        }}
-      >
-        <Toolbar>
-          <Typography variant="h6" noWrap sx={{ fontWeight: 700, letterSpacing: 1 }}>
-            CineBee Admin
-          </Typography>
-        </Toolbar>
-        <List>
-          {menuItems.map((item) => (
-            <ListItem
-              button
-              key={item.text}
-              onClick={() => navigate(item.path)}
-              sx={{
-                my: 1,
-                borderRadius: 2,
-                background: location.pathname === item.path ? 'rgba(255,255,255,0.08)' : 'none',
-                transition: 'background 0.2s, transform 0.2s',
-                '&:hover': {
-                  background: 'rgba(255,255,255,0.15)',
-                  transform: 'translateX(6px) scale(1.03)',
-                },
-              }}
-            >
-              <ListItemIcon sx={{ color: '#fff' }}>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItem>
-          ))}
-          <ListItem
-            button
-            sx={{
-              mt: 4,
-              borderRadius: 2,
-              transition: 'background 0.2s, transform 0.2s',
-              '&:hover': {
-                background: 'rgba(255,255,255,0.15)',
-                transform: 'translateX(6px) scale(1.03)',
-              },
-            }}
-          >
-            <ListItemIcon sx={{ color: '#fff' }}>
-              <LogoutIcon />
-            </ListItemIcon>
-            <ListItemText primary="Logout" />
-          </ListItem>
-        </List>
-      </Drawer>
+      <Sidebar />
       {/* Main Content */}
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <AppBar position="static" color="inherit" elevation={0} sx={{ mb: 2, borderRadius: 2 }}>

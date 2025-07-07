@@ -4,7 +4,8 @@
     "invalid_email": "Định dạng email không hợp lệ.",
     "password_short": "Mật khẩu phải có ít nhất 6 ký tự.",
     "success": "Đăng ký thành công!",
-    "fail": "Đăng ký thất bại. Vui lòng thử lại."
+    "fail": "Đăng ký thất bại. Vui lòng thử lại.",
+    "have_account": "Đã có tài khoản?"
   },
   "login": {
     "fill_required": "Vui lòng nhập đầy đủ thông tin và mã xác nhận.",
@@ -14,7 +15,8 @@
     "captcha_refresh": "Làm mới mã xác nhận",
     "captcha_loading": "Đang tải...",
     "captcha_placeholder": "Nhập mã xác nhận",
-    "user_blocked": "Tài khoản của bạn đã bị khóa hoặc chưa kích hoạt!"
+    "user_blocked": "Tài khoản của bạn đã bị khóa hoặc chưa kích hoạt!",
+    "no_account": "Chưa có tài khoản?"
   },
   "status": {
     "active": "Đang hoạt động",
@@ -73,7 +75,7 @@
   "banner": {
     "special_offer": "ƯU ĐÃI ĐẶC BIỆT",
     "buy_2_get_1": "Mua 2 vé tặng 1 bắp rang, chỉ áp dụng online!",
-    "book_now": "Đặt vé ngay"
+    "book_now": "Đặt vé"
   },
   "movie": {
     "title": "Tên phim",

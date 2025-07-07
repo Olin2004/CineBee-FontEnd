@@ -21,13 +21,12 @@ function App() {
   const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-
     const initializeAuth = async () => {
       try {
-        if (accessToken) {
-          dispatch(setAuth({ accessToken }));
-          await dispatch(fetchProfile());
+        // Với HTTP-only cookies, luôn thử fetch profile để kiểm tra xác thực
+        const profileResult = await dispatch(fetchProfile());
+        if (profileResult.payload) {
+          dispatch(setAuth({ isAuthenticated: true }));
         }
       } finally {
         setLoading(false);

@@ -68,7 +68,6 @@ const Header = () => {
     try {
       await logoutUser();
     } catch (e) {}
-    localStorage.removeItem('accessToken');
     dispatch(logout());
     window.location.reload();
   };
@@ -185,8 +184,7 @@ const Header = () => {
             {/* Nút Đặt vé nổi bật */}
             <Link
               to="/booking"
-              className="ml-4 px-6 py-2 rounded-2xl bg-gradient-to-r from-yellow-400 to-red-500 text-white font-bold shadow-lg hover:from-yellow-500 hover:to-red-600 transition-all duration-300 text-lg border-0 focus:outline-none focus:ring-2 focus:ring-yellow-300"
-              style={{ minWidth: 120 }}
+              className="ml-4 px-4 py-2 rounded-xl bg-gradient-to-r from-yellow-400 to-red-500 text-white font-bold shadow-lg hover:from-yellow-500 hover:to-red-600 transition-all duration-300 whitespace-nowrap flex items-center justify-center"
             >
               {t('banner.book_now')}
             </Link>
@@ -314,13 +312,44 @@ const Header = () => {
                       </button>
                       <Link
                         to="/my-tickets"
-                        className="w-full text-left py-3 px-4 text-blue-600 dark:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-xl transition-all duration-300 flex items-center gap-3 group no-underline"
+                        className="w-full text-left py-3 px-4 my-2 rounded-2xl bg-gradient-to-r from-yellow-400 to-red-500 text-white font-bold shadow-lg hover:from-yellow-500 hover:to-red-600 transition-all duration-300 flex items-center gap-3 group no-underline scale-105 hover:scale-110 border-0 focus:outline-none focus:ring-2 focus:ring-yellow-300"
                         onClick={() => setProfileMenuOpen(false)}
+                        style={{ fontSize: 18 }}
                       >
-                        <span className="material-icons text-blue-500 group-hover:scale-110 transition-transform duration-300">
-                          confirmation_number
+                        <span className="inline-block align-middle">
+                          <svg
+                            width="26"
+                            height="26"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              x="3"
+                              y="7"
+                              width="18"
+                              height="10"
+                              rx="2"
+                              fill="white"
+                              fillOpacity="0.15"
+                            />
+                            <rect
+                              x="3"
+                              y="7"
+                              width="18"
+                              height="10"
+                              rx="2"
+                              stroke="white"
+                              strokeWidth="1.5"
+                            />
+                            <circle cx="7.5" cy="12" r="1.5" fill="white" />
+                            <circle cx="12" cy="12" r="1.5" fill="white" />
+                            <circle cx="16.5" cy="12" r="1.5" fill="white" />
+                          </svg>
                         </span>
-                        <span className="font-medium">Lịch sử vé</span>
+                        <span className="font-bold text-lg drop-shadow">
+                          {t('header.my_tickets', 'Lịch sử vé')}
+                        </span>
                       </Link>
                       <button
                         className="w-full text-left py-3 px-4 text-gray-700 dark:text-gray-200 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all duration-300 flex items-center gap-3 group"

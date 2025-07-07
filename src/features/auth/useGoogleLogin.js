@@ -55,8 +55,7 @@ export function useGoogleLogin() {
         setLoading(false);
         return;
       }
-      localStorage.setItem('accessToken', res.data.accessToken);
-      dispatch(setAuth({ accessToken: res.data.accessToken }));
+      dispatch(setAuth({ isAuthenticated: true }));
       await dispatch(fetchProfile());
       queryClient.invalidateQueries({ queryKey: ['profile'] });
       setSuccess(MESSAGES.LOGIN.SUCCESS);
