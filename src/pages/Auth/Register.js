@@ -39,231 +39,235 @@ const Register = () => {
         />
         <meta property="og:image" content="/assets/logo/logocenima.png" />
       </Helmet>
-      <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-[#1a103d] via-[#1e1b4b] to-[#312e81]">
-        {/* Left: Logo + slogan (desktop) */}
-        <div className="hidden md:flex flex-1 flex-col items-center justify-center bg-gradient-to-br from-[#2d1a4d] to-[#1e1b4b] relative">
-          <img src={logo} alt="CineBee" className="w-48 mb-6 drop-shadow-2xl animate-fade-in-up" />
-          <h2 className="text-3xl font-extrabold text-white mb-2 leading-tight drop-shadow-2xl text-center bg-gradient-to-r from-yellow-400 to-pink-400 bg-clip-text text-transparent">
-            Đăng ký tài khoản CineBee
-          </h2>
-          <p className="text-lg text-white/80 mb-8 text-center max-w-xs">
-            Đặt vé - Nhận ưu đãi - Xem phim dễ dàng
-          </p>
-          <div className="absolute bottom-8 left-0 right-0 flex flex-col items-center">
-            <span className="text-white/60 text-xs">© CineBee 2024</span>
+
+      <div className="min-h-screen flex bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+        {/* Animated background elements */}{' '}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -inset-[10px] opacity-50">
+            <div className="absolute top-[30%] left-[15%] w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+            <div className="absolute top-[70%] right-[15%] w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+            <div className="absolute bottom-[10%] left-[50%] w-72 h-72 bg-slate-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
           </div>
         </div>
-        {/* Right: Form */}
-        <div className="flex-1 flex items-center justify-center min-h-screen py-8 px-4 sm:px-8">
-          <div className="w-full max-w-md">
-            {/* Logo + slogan (mobile) */}
-            <div className="flex flex-col items-center mb-6 md:hidden">
-              <img src={logo} alt="CineBee" className="w-32 mb-2 drop-shadow-2xl" />
-              <h2 className="text-2xl font-extrabold text-white mb-1 text-center bg-gradient-to-r from-yellow-400 to-pink-400 bg-clip-text text-transparent">
-                Đăng ký tài khoản CineBee
-              </h2>
-              <p className="text-base text-white/80 text-center max-w-xs">
-                Đặt vé - Nhận ưu đãi - Xem phim dễ dàng
-              </p>
+        {/* Left: Enhanced Banner */}
+        <div className="hidden lg:flex flex-1 flex-col items-center justify-center relative z-10">
+          <div className="text-center space-y-6 max-w-md">
+            <div className="relative">
+              <img
+                src={logo}
+                alt="CineBee"
+                className="w-32 h-32 mx-auto drop-shadow-2xl hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-3xl"></div>
             </div>
-            <form
-              onSubmit={handleSubmit}
-              className="w-full bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl px-8 py-8 flex flex-col gap-0 border border-white/10 animate-fade-in-up"
-              autoComplete="off"
-            >
-              <div className="text-center mb-6">
-                <h1 className="text-4xl font-extrabold text-white mb-2 tracking-wide bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                  {t('form.register')}
-                </h1>
-                <div className="text-sm text-gray-300 font-medium mb-2">
-                  {t('form.register')} {t('banner.book_now')}
+
+            <div className="space-y-4">
+              {' '}
+              <h1 className="text-5xl font-bold text-white leading-tight">
+                Tham gia
+                <br />
+                <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-blue-500 bg-clip-text text-transparent">
+                  CineBee
+                </span>
+              </h1>
+              <p className="text-xl text-white/90 leading-relaxed">
+                Khởi đầu hành trình
+                <br />
+                <span className="text-purple-400">điện ảnh tuyệt vời</span>
+              </p>
+              <div className="text-lg text-white/70 space-y-2">
+                <div className="flex items-center justify-center">
+                  <span className="w-2 h-2 bg-purple-400 rounded-full mr-3"></span>
+                  Đăng ký miễn phí hoàn toàn
+                </div>
+                <div className="flex items-center justify-center">
+                  <span className="w-2 h-2 bg-blue-400 rounded-full mr-3"></span>
+                  Nhận ưu đãi độc quyền
+                </div>
+                <div className="flex items-center justify-center">
+                  <span className="w-2 h-2 bg-slate-400 rounded-full mr-3"></span>
+                  Trải nghiệm xem phim tốt nhất
                 </div>
               </div>
-              {/* Email */}
-              <div className="mb-4 group">
-                <label className="block text-white font-semibold mb-2 text-sm">
-                  {t('form.email')}
-                </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+            </div>
+          </div>
+
+          <div className="absolute bottom-8 text-center">
+            <p className="text-white/40 text-sm">© 2024 CineBee. All rights reserved.</p>
+          </div>
+        </div>
+        {/* Right: Enhanced Register form */}
+        <div className="flex-1 flex items-center justify-center py-8 px-4 relative z-10 overflow-y-auto">
+          <div className="w-full max-w-md">
+            <form
+              onSubmit={handleSubmit}
+              className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-white/20 relative overflow-hidden my-8"
+              autoComplete="off"
+            >
+              {/* Form header with gradient overlay */}{' '}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-400 via-blue-400 to-blue-500"></div>
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mb-4">
+                  <FaUserAlt className="text-white text-xl" />
+                </div>
+                <h1 className="text-3xl font-bold text-gray-800 mb-2">Tạo tài khoản mới</h1>
+                <p className="text-gray-600 text-sm">Điền thông tin để bắt đầu với CineBee</p>
+              </div>
+              {/* Email field */}
+              <div className="mb-4">
+                <label className="block text-gray-700 font-semibold mb-2 text-sm">Email</label>
+                <div className="relative group">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-purple-500 transition-colors">
                     <FaEnvelope />
-                  </span>
+                  </div>
                   <input
                     type="email"
                     name="email"
                     value={form.email}
                     onChange={handleChange}
                     required
-                    className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/10 text-white placeholder-gray-400 border border-white/20 focus:border-pink-400 focus:ring-2 focus:ring-pink-400/20 transition-all duration-300 backdrop-blur-sm"
-                    placeholder={t('form.email')}
+                    className="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 transition-all duration-300 text-gray-800 placeholder-gray-400 bg-gray-50/50"
+                    placeholder="your.email@example.com"
                     autoComplete="email"
                   />
                 </div>
               </div>
-              {/* Full name */}
-              <div className="mb-4 group">
-                <label className="block text-white font-semibold mb-2 text-sm">
-                  {t('form.full_name')}
-                </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+              {/* Full Name field */}
+              <div className="mb-4">
+                <label className="block text-gray-700 font-semibold mb-2 text-sm">Họ và tên</label>
+                <div className="relative group">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-purple-500 transition-colors">
                     <FaUserAlt />
-                  </span>
+                  </div>
                   <input
                     type="text"
                     name="fullName"
                     value={form.fullName}
                     onChange={handleChange}
                     required
-                    className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/10 text-white placeholder-gray-400 border border-white/20 focus:border-pink-400 focus:ring-2 focus:ring-pink-400/20 transition-all duration-300 backdrop-blur-sm"
-                    placeholder={t('form.full_name')}
+                    className="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 transition-all duration-300 text-gray-800 placeholder-gray-400 bg-gray-50/50"
+                    placeholder="Nguyễn Văn A"
                     autoComplete="name"
                   />
                 </div>
               </div>
-              {/* Phone */}
-              <div className="mb-4 group">
-                <label className="block text-white font-semibold mb-2 text-sm">
-                  {t('form.phone')}
+              {/* Phone field */}
+              <div className="mb-4">
+                <label className="block text-gray-700 font-semibold mb-2 text-sm">
+                  Số điện thoại
                 </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                <div className="relative group">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-purple-500 transition-colors">
                     <FaPhone />
-                  </span>
+                  </div>
                   <input
                     type="tel"
                     name="phoneNumber"
                     value={form.phoneNumber}
                     onChange={handleChange}
                     required
-                    className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/10 text-white placeholder-gray-400 border border-white/20 focus:border-pink-400 focus:ring-2 focus:ring-pink-400/20 transition-all duration-300 backdrop-blur-sm"
-                    placeholder={t('form.phone')}
+                    className="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 transition-all duration-300 text-gray-800 placeholder-gray-400 bg-gray-50/50"
+                    placeholder="0901234567"
                     autoComplete="tel"
                   />
                 </div>
               </div>
-              {/* Password */}
-              <div className="mb-4 group">
-                <label className="block text-white font-semibold mb-2 text-sm">
-                  {t('form.password')}
-                </label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                    <FaLock />
-                  </span>
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    name="password"
-                    value={form.password}
-                    onChange={handleChange}
-                    required
-                    className="w-full pl-10 pr-10 py-3 rounded-xl bg-white/10 text-white placeholder-gray-400 border border-white/20 focus:border-pink-400 focus:ring-2 focus:ring-pink-400/20 transition-all duration-300 backdrop-blur-sm"
-                    placeholder={t('form.password')}
-                    autoComplete="new-password"
-                  />
-                  <button
-                    type="button"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-pink-400 focus:outline-none"
-                    tabIndex={-1}
-                    onClick={() => setShowPassword((v) => !v)}
-                  >
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </button>
-                </div>
-              </div>
-              {/* Date of Birth */}
-              <div className="mb-4 group">
-                <label className="block text-white font-semibold mb-2 text-sm">Ngày sinh</label>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+              {/* Date of Birth field */}
+              <div className="mb-4">
+                <label className="block text-gray-700 font-semibold mb-2 text-sm">Ngày sinh</label>
+                <div className="relative group">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-purple-500 transition-colors">
                     <FaBirthdayCake />
-                  </span>
+                  </div>
                   <input
                     type="date"
                     name="dateOfBirth"
                     value={form.dateOfBirth}
                     onChange={handleChange}
                     required
-                    className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/10 text-white placeholder-gray-400 border border-white/20 focus:border-pink-400 focus:ring-2 focus:ring-pink-400/20 transition-all duration-300 backdrop-blur-sm"
-                    style={{ fontSize: 15 }}
+                    className="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 transition-all duration-300 text-gray-800 placeholder-gray-400 bg-gray-50/50"
+                    autoComplete="bday"
                   />
                 </div>
               </div>
-              {/* Google login */}
-              <div className="mb-4">
-                <GoogleLoginButton />
+              {/* Password field */}
+              <div className="mb-6">
+                <label className="block text-gray-700 font-semibold mb-2 text-sm">Mật khẩu</label>
+                <div className="relative group">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-purple-500 transition-colors">
+                    <FaLock />
+                  </div>
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    name="password"
+                    value={form.password}
+                    onChange={handleChange}
+                    required
+                    className="w-full pl-12 pr-12 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 transition-all duration-300 text-gray-800 placeholder-gray-400 bg-gray-50/50"
+                    placeholder="••••••••"
+                    autoComplete="new-password"
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-500 focus:outline-none transition-colors"
+                    onClick={() => setShowPassword((v) => !v)}
+                  >
+                    {showPassword ? (
+                      <FaEyeSlash className="text-lg" />
+                    ) : (
+                      <FaEye className="text-lg" />
+                    )}
+                  </button>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  Ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số
+                </p>
               </div>
-              {/* Hiển thị message lỗi/thành công từ API dưới form */}
+              {/* Error message */}
               {error && (
-                <div className="flex items-center justify-center gap-2 text-red-700 bg-red-100/80 border border-red-400 rounded-xl py-2 px-3 mb-3 shadow-sm animate-fade-in-up">
-                  <svg
-                    className="w-5 h-5 flex-shrink-0"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      fill="#fee2e2"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 8v4m0 4h.01"
-                    />
-                  </svg>
-                  <span className="font-semibold text-sm">{error}</span>
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl">
+                  <p className="text-red-600 text-sm font-medium">{error}</p>
                 </div>
               )}
-              {success && (
-                <div className="flex items-center justify-center gap-2 text-green-700 bg-green-100/80 border border-green-400 rounded-xl py-2 px-3 mb-3 shadow-sm animate-fade-in-up">
-                  <svg
-                    className="w-5 h-5 flex-shrink-0"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      fill="#bbf7d0"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M9 12l2 2 4-4"
-                    />
-                  </svg>
-                  <span className="font-semibold text-sm">{success}</span>
-                </div>
-              )}
-              {/* Submit button */}
+              {/* Register button */}{' '}
               <button
                 type="submit"
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-pink-500 to-yellow-400 text-white font-bold text-lg shadow-lg hover:from-pink-600 hover:to-yellow-500 transition-all duration-300 mt-2 mb-2"
                 disabled={loading}
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 via-blue-600 to-blue-700 hover:from-purple-700 hover:via-blue-700 hover:to-blue-800 text-white font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none relative overflow-hidden group"
               >
-                {loading ? t('common.loading', 'Đang đăng ký...') : t('form.register')}
+                {loading && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-600/80 via-blue-600/80 to-blue-700/80 flex items-center justify-center">
+                    <div className="animate-spin w-6 h-6 border-2 border-white border-t-transparent rounded-full"></div>
+                  </div>
+                )}
+                <span className={loading ? 'opacity-0' : 'opacity-100'}>Tạo tài khoản</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
               </button>
+              {/* Google register */}
+              <div className="mt-6">
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-300"></div>
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-4 bg-white text-gray-500">hoặc</span>
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <GoogleLoginButton />
+                </div>
+              </div>
               {/* Login link */}
-              <div className="text-center mt-2">
-                <span className="text-white/80 text-sm">
-                  {t('signup.have_account', 'Đã có tài khoản?')}
-                </span>
-                <Link to="/login" className="text-pink-300 hover:underline text-sm font-semibold">
-                  {t('form.login')}
-                </Link>
+              <div className="mt-6 text-center">
+                <p className="text-gray-600 text-sm">
+                  Đã có tài khoản?{' '}
+                  <Link
+                    to="/login"
+                    className="text-purple-600 hover:text-purple-800 font-semibold hover:underline transition-colors"
+                  >
+                    Đăng nhập ngay
+                  </Link>
+                </p>
               </div>
             </form>
           </div>

@@ -39,7 +39,7 @@ export const ThemeSwitcherButton = () => {
 
   return (
     <button
-      className="group relative inline-flex items-center gap-2 overflow-hidden rounded-md border border-neutral-500/10 bg-white px-2 py-1 font-medium text-neutral-600 tracking-tight hover:bg-neutral-100 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700"
+      className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl border border-purple-500/20 bg-white px-3 py-2 font-medium text-neutral-600 tracking-tight hover:bg-purple-50 hover:border-purple-400/40 dark:bg-slate-800 dark:text-gray-300 dark:hover:bg-purple-900/20 dark:border-purple-400/30 transition-all duration-300"
       onClick={toggleTheme}
       type="button"
     >

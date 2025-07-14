@@ -17,6 +17,7 @@ const authSlice = createSlice({
   reducers: {
     setAuth(state, action) {
       state.user = action.payload.user;
+      state.profile = action.payload.user; // Đồng bộ profile với user
       state.isAuthenticated = action.payload.isAuthenticated || true;
     },
     logout(state) {

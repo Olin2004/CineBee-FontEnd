@@ -15,6 +15,7 @@ import {
 import SEO from '../../components/SEO/SEO';
 import Banner from './components/Banner';
 import WeekTabs from './components/WeekTabs';
+import MovieList from '../../components/MovieList';
 SwiperCore.use([AutoplayModules, PaginationModules, EffectFadeModules]);
 
 const TrendingSection = lazy(() =>
@@ -90,6 +91,7 @@ const Home = () => {
             data-aos-delay="400"
           >
             <WeekTabs />
+            <MovieList />
           </div>
         </div>
       </div>

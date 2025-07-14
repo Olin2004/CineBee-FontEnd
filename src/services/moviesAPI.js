@@ -53,11 +53,28 @@ export const getListMovies = async (page, size) => {
 };
 
 export const deleteMovie = async (movieId) => {
-  return api.post(
-    `${ENDPOINTS_DELETE_MOVIE}?id=${movieId}`,
-    {},
-    {
-      withCredentials: true,
+  try {
+    // Try POST method first (as defined in backend)
+    const response = await api.post(
+      `${ENDPOINTS_DELETE_MOVIE}?id=${movieId}`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
+    return response;
+  } catch (error) {
+    // If POST fails with 405 (Method Not Allowed), try DELETE method
+    if (error.response?.status === 405) {
+      try {
+        const response = await api.delete(`${ENDPOINTS_DELETE_MOVIE}?id=${movieId}`, {
+          withCredentials: true,
+        });
+        return response;
+      } catch (deleteError) {
+        throw deleteError;
+      }
     }
-  );
+    throw error;
+  }
 };

@@ -1,260 +1,436 @@
-import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import {
+  FaTicketAlt,
+  FaCalendarAlt,
+  FaClock,
+  FaMapMarkerAlt,
+  FaCouch,
+  FaStar,
+  FaSearch,
+  FaFilter,
+  FaDownload,
+  FaQrcode,
+  FaCheckCircle,
+  FaTimesCircle,
+  FaExclamationTriangle,
+} from 'react-icons/fa';
 
+// Mock data for tickets
 const mockTickets = [
   {
-    id: 'A123456',
-    movie: 'Bão Máu',
-    cinema: 'Beta Mỹ Đình',
-    showtime: '2025-07-01 19:30',
-    seat: 'D7, D8',
-    price: 180000,
-    status: 'Đã thanh toán',
+    id: 'TK001',
+    movieTitle: 'Dune: Hành Tinh Cát',
+    moviePoster: 'https://image.tmdb.org/t/p/w500/8ZbybiGYe8XM4WGmGlhF0ec5R7u.jpg',
+    cinema: 'CGV Vincom Bà Triệu',
+    cinemaAddress: 'Tầng 12, Vincom Center, Ba Đình, Hà Nội',
+    date: '2025-07-15',
+    time: '19:30',
+    room: 'Phòng IMAX 1',
+    seats: ['A5', 'A6'],
+    totalPrice: 320000,
+    status: 'confirmed',
+    bookingDate: '2025-07-10',
+    qrCode: 'QR123456789',
+    genre: 'Khoa học viễn tưởng',
+    duration: 155,
+    rating: 8.2,
   },
   {
-    id: 'B654321',
-    movie: 'Art Online',
-    cinema: 'CGV Vincom',
-    showtime: '2025-07-03 21:00',
-    seat: 'B3',
-    price: 90000,
-    status: 'Đã thanh toán',
+    id: 'TK002',
+    movieTitle: 'Spider-Man: No Way Home',
+    moviePoster: 'https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg',
+    cinema: 'Lotte Cinema Landmark 81',
+    cinemaAddress: 'Tầng 5, Landmark 81, Bình Thạnh, TP.HCM',
+    date: '2025-07-12',
+    time: '16:00',
+    room: 'Phòng Premium A',
+    seats: ['D8'],
+    totalPrice: 180000,
+    status: 'used',
+    bookingDate: '2025-07-08',
+    qrCode: 'QR987654321',
+    genre: 'Hành động',
+    duration: 148,
+    rating: 8.7,
   },
   {
-    id: 'C789012',
-    movie: 'Tot Nghiep',
-    cinema: 'Lotte Center',
-    showtime: '2025-07-05 17:00',
-    seat: 'F10, F11',
-    price: 200000,
-    status: 'Chưa thanh toán',
+    id: 'TK003',
+    movieTitle: 'Black Widow',
+    moviePoster: 'https://image.tmdb.org/t/p/w500/qAZ0pzat24kLdO3o8ejmbLxyOac.jpg',
+    cinema: 'Galaxy Cinema Nguyễn Du',
+    cinemaAddress: '116 Nguyễn Du, Hai Bà Trưng, Hà Nội',
+    date: '2025-07-20',
+    time: '21:00',
+    room: 'Phòng Gold Class',
+    seats: ['B3', 'B4', 'B5'],
+    totalPrice: 375000,
+    status: 'cancelled',
+    bookingDate: '2025-07-05',
+    qrCode: 'QR555666777',
+    genre: 'Hành động',
+    duration: 134,
+    rating: 7.8,
   },
 ];
 
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
+
 const MyTickets = () => {
-  const [loading, setLoading] = useState(true);
-  const [tickets, setTickets] = useState([]);
-  const [selectedTicket, setSelectedTicket] = useState(null);
-  const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [tickets] = useState(mockTickets);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setTimeout(() => {
-      setTickets(mockTickets);
-      setLoading(false);
-      if (mockTickets.length === 0) toast.info('Bạn chưa có vé nào!');
-    }, 1200);
+    // Simulate loading
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
   }, []);
 
-  // Đóng modal khi bấm ngoài hoặc nhấn ESC
-  useEffect(() => {
-    if (!selectedTicket) return;
-    const handleKey = (e) => {
-      if (e.key === 'Escape') setSelectedTicket(null);
-    };
-    const handleClick = (e) => {
-      if (e.target.classList.contains('modal-bg')) setSelectedTicket(null);
-    };
-    window.addEventListener('keydown', handleKey);
-    window.addEventListener('mousedown', handleClick);
-    return () => {
-      window.removeEventListener('keydown', handleKey);
-      window.removeEventListener('mousedown', handleClick);
-    };
-  }, [selectedTicket]);
+  // Filter tickets based on search and status
+  const filteredTickets = tickets.filter((ticket) => {
+    const matchesSearch =
+      ticket.movieTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ticket.cinema.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ticket.id.toLowerCase().includes(searchTerm.toLowerCase());
 
-  // Lọc vé theo search và trạng thái
-  const filteredTickets = tickets.filter((t) => {
-    const matchSearch =
-      t.id.toLowerCase().includes(search.toLowerCase()) ||
-      t.movie.toLowerCase().includes(search.toLowerCase());
-    const matchStatus =
-      statusFilter === 'all'
-        ? true
-        : statusFilter === 'paid'
-        ? t.status === 'Đã thanh toán'
-        : t.status !== 'Đã thanh toán';
-    return matchSearch && matchStatus;
+    const matchesStatus = filterStatus === 'all' || ticket.status === filterStatus;
+
+    return matchesSearch && matchesStatus;
   });
 
-  return (
-    <div className="max-w-4xl mx-auto p-6 mt-8 rounded-xl shadow-2xl min-h-[400px] bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#23263a]">
-      <h1 className="text-3xl font-extrabold mb-8 text-red-500 dark:text-yellow-400 tracking-wide drop-shadow">
-        Lịch sử đặt vé của bạn
-      </h1>
-      {/* Search & Filter */}
-      <div className="flex flex-col md:flex-row gap-4 mb-6 items-center">
-        <input
-          type="text"
-          placeholder="Tìm mã vé hoặc tên phim..."
-          className="px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#23263a] text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-400 w-full md:w-1/2"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <select
-          className="px-4 py-2 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#23263a] text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-yellow-400 w-full md:w-1/4"
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-        >
-          <option value="all">Tất cả trạng thái</option>
-          <option value="paid">Đã thanh toán</option>
-          <option value="unpaid">Chưa thanh toán</option>
-        </select>
-      </div>
-      {loading ? (
-        <div className="space-y-4">
-          {Array.from({ length: 3 }).map((_, idx) => (
-            <div
-              key={idx}
-              className="animate-pulse flex gap-4 items-center bg-gray-100 dark:bg-[#23263a] rounded-2xl p-4"
-            >
-              <div className="w-24 h-8 bg-gray-300 dark:bg-[#35395c] rounded" />
-              <div className="flex-1 h-8 bg-gray-200 dark:bg-[#35395c] rounded" />
-              <div className="w-20 h-8 bg-gray-300 dark:bg-[#35395c] rounded" />
-              <div className="w-16 h-8 bg-gray-200 dark:bg-[#35395c] rounded" />
-              <div className="w-24 h-8 bg-gray-300 dark:bg-[#35395c] rounded" />
-            </div>
-          ))}
-        </div>
-      ) : filteredTickets.length === 0 ? (
-        <div className="text-center text-gray-500 py-12">Bạn chưa có vé nào.</div>
-      ) : (
-        <div className="overflow-x-auto scrollbar-hide">
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-[#23263a] bg-white dark:bg-[#23263a] rounded-xl shadow-lg">
-            <thead>
-              <tr>
-                <th className="px-4 py-3 text-left text-base font-bold text-gray-600 dark:text-gray-300 uppercase">
-                  MÃ VÉ
-                </th>
-                <th className="px-4 py-3 text-left text-base font-bold text-gray-600 dark:text-gray-300 uppercase">
-                  PHIM
-                </th>
-                <th className="px-4 py-3 text-left text-base font-bold text-gray-600 dark:text-gray-300 uppercase">
-                  RẠP
-                </th>
-                <th className="px-4 py-3 text-left text-base font-bold text-gray-600 dark:text-gray-300 uppercase">
-                  SUẤT
-                </th>
-                <th className="px-4 py-3 text-left text-base font-bold text-gray-600 dark:text-gray-300 uppercase">
-                  GHẾ
-                </th>
-                <th className="px-4 py-3 text-left text-base font-bold text-gray-600 dark:text-gray-300 uppercase">
-                  GIÁ
-                </th>
-                <th className="px-4 py-3 text-left text-base font-bold text-gray-600 dark:text-gray-300 uppercase">
-                  TRẠNG THÁI
-                </th>
-                <th className="px-4 py-3"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredTickets.map((ticket) => (
-                <tr
-                  key={ticket.id}
-                  className="hover:scale-[1.015] hover:shadow-2xl hover:z-10 transition-all duration-200 rounded-xl bg-white dark:bg-[#23263a] border-b border-gray-100 dark:border-[#23263a]"
-                >
-                  <td className="px-4 py-3 font-mono text-base text-blue-600 dark:text-blue-300 underline cursor-pointer">
-                    {ticket.id}
-                  </td>
-                  <td className="px-4 py-3 font-bold text-lg text-gray-900 dark:text-white">
-                    {ticket.movie}
-                  </td>
-                  <td className="px-4 py-3 text-gray-700 dark:text-gray-300">{ticket.cinema}</td>
-                  <td className="px-4 py-3 text-gray-700 dark:text-gray-300">{ticket.showtime}</td>
-                  <td className="px-4 py-3 text-gray-700 dark:text-gray-300">{ticket.seat}</td>
-                  <td className="px-4 py-3 text-right text-gray-900 dark:text-yellow-300 font-semibold">
-                    {ticket.price.toLocaleString()}đ
-                  </td>
-                  <td className="px-4 py-3">
-                    <span
-                      className={`inline-block px-4 py-1 rounded-xl text-base font-bold shadow-md ${
-                        ticket.status === 'Đã thanh toán'
-                          ? 'bg-green-200/80 text-green-800 dark:bg-green-700/80 dark:text-green-100'
-                          : 'bg-yellow-100/80 text-yellow-800 dark:bg-yellow-700/80 dark:text-yellow-100'
-                      }`}
-                    >
-                      {ticket.status}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <button
-                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-yellow-400 to-red-500 text-white font-bold shadow-lg hover:from-yellow-500 hover:to-red-600 transition-all duration-200 text-base focus:outline-none focus:ring-2 focus:ring-yellow-300"
-                      onClick={() => setSelectedTicket(ticket)}
-                    >
-                      Xem chi tiết
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+  const getStatusConfig = (status) => {
+    switch (status) {
+      case 'confirmed':
+        return {
+          label: 'Đã xác nhận',
+          icon: FaCheckCircle,
+          color: 'text-green-600',
+          bgColor: 'bg-green-100',
+          borderColor: 'border-green-200',
+        };
+      case 'used':
+        return {
+          label: 'Đã sử dụng',
+          icon: FaTicketAlt,
+          color: 'text-blue-600',
+          bgColor: 'bg-blue-100',
+          borderColor: 'border-blue-200',
+        };
+      case 'cancelled':
+        return {
+          label: 'Đã hủy',
+          icon: FaTimesCircle,
+          color: 'text-red-600',
+          bgColor: 'bg-red-100',
+          borderColor: 'border-red-200',
+        };
+      default:
+        return {
+          label: 'Chưa xác định',
+          icon: FaExclamationTriangle,
+          color: 'text-gray-600',
+          bgColor: 'bg-gray-100',
+          borderColor: 'border-gray-200',
+        };
+    }
+  };
 
-      {/* Modal chi tiết vé */}
-      {selectedTicket && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fade-in modal-bg">
-          <div className="bg-white dark:bg-gray-900 rounded-xl shadow-2xl p-8 max-w-md w-full relative">
-            <button
-              className="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-2xl font-bold focus:outline-none"
-              onClick={() => setSelectedTicket(null)}
-              title="Đóng"
-            >
-              ×
-            </button>
-            <div className="flex flex-col items-center gap-3">
-              <img
-                src="https://cdn.galaxycine.vn/media/2024/6/7/1920x1080_1717738579647.jpg"
-                alt="poster"
-                className="w-32 h-44 object-cover rounded-xl shadow mb-2"
+  const downloadTicket = (ticket) => {
+    // Simulate download
+    alert(`Đang tải vé ${ticket.id}...`);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-purple-500 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Đang tải lịch sử vé...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-blue-900 dark:to-purple-900">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <motion.div
+          className="text-center mb-8"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
+            Vé của tôi
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 text-lg">
+            Quản lý và theo dõi lịch sử đặt vé của bạn
+          </p>
+        </motion.div>
+
+        {/* Search and Filter */}
+        <motion.div
+          className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-2xl shadow-xl p-6 mb-8 border border-gray-200 dark:border-gray-700"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
+          <div className="flex flex-col md:flex-row gap-4">
+            {/* Search */}
+            <div className="flex-1 relative">
+              <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Tìm kiếm theo tên phim, rạp hoặc mã vé..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
-              <div className="text-xl font-bold text-red-500 mb-1">{selectedTicket.movie}</div>
-              <div className="text-gray-700 dark:text-gray-200 mb-1">
-                Rạp: <span className="font-semibold">{selectedTicket.cinema}</span>
-              </div>
-              <div className="text-gray-700 dark:text-gray-200 mb-1">
-                Suất: <span className="font-semibold">{selectedTicket.showtime}</span>
-              </div>
-              <div className="text-gray-700 dark:text-gray-200 mb-1">
-                Ghế: <span className="font-semibold">{selectedTicket.seat}</span>
-              </div>
-              <div className="text-gray-700 dark:text-gray-200 mb-1">
-                Mã vé: <span className="font-mono text-blue-600">{selectedTicket.id}</span>
-              </div>
-              <div className="text-gray-700 dark:text-gray-200 mb-1">
-                Giá: <span className="font-semibold">{selectedTicket.price.toLocaleString()}đ</span>
-              </div>
-              <div className="text-gray-700 dark:text-gray-200 mb-1">
-                Trạng thái:{' '}
-                <span
-                  className={`font-bold ${
-                    selectedTicket.status === 'Đã thanh toán' ? 'text-green-600' : 'text-yellow-600'
-                  }`}
-                  title={
-                    selectedTicket.status === 'Đã thanh toán'
-                      ? 'Vé đã thanh toán, có thể sử dụng'
-                      : 'Vé chưa thanh toán, vui lòng thanh toán trước khi sử dụng'
-                  }
-                >
-                  {selectedTicket.status}
-                </span>
-              </div>
-              {/* QR code giả lập */}
-              <div
-                className="mt-4 mb-2 flex flex-col items-center"
-                title="Quét mã này tại rạp để kiểm tra vé"
+            </div>
+
+            {/* Filter */}
+            <div className="relative">
+              <FaFilter className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className="pl-12 pr-8 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent appearance-none"
               >
-                <img
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${selectedTicket.id}`}
-                  alt="QR code"
-                  className="w-28 h-28 rounded bg-white border border-gray-200 shadow"
-                />
-                <span className="text-xs text-gray-400 mt-1">Quét mã để kiểm tra vé</span>
-              </div>
+                <option value="all">Tất cả trạng thái</option>
+                <option value="confirmed">Đã xác nhận</option>
+                <option value="used">Đã sử dụng</option>
+                <option value="cancelled">Đã hủy</option>
+              </select>
             </div>
           </div>
-        </div>
-      )}
+        </motion.div>
+
+        {/* Tickets List */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="space-y-6"
+        >
+          {filteredTickets.length === 0 ? (
+            <motion.div
+              variants={itemVariants}
+              className="text-center py-12 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700"
+            >
+              <FaTicketAlt className="text-6xl text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-600 dark:text-gray-400 mb-2">
+                Không tìm thấy vé nào
+              </h3>
+              <p className="text-gray-500 dark:text-gray-500">
+                {searchTerm || filterStatus !== 'all'
+                  ? 'Thử thay đổi tiêu chí tìm kiếm hoặc bộ lọc'
+                  : 'Bạn chưa đặt vé nào. Hãy đặt vé ngay!'}
+              </p>
+            </motion.div>
+          ) : (
+            filteredTickets.map((ticket) => {
+              const statusConfig = getStatusConfig(ticket.status);
+              const StatusIcon = statusConfig.icon;
+
+              return (
+                <motion.div
+                  key={ticket.id}
+                  variants={itemVariants}
+                  className={`bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-2xl shadow-xl border-2 ${statusConfig.borderColor} overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-[1.02]`}
+                >
+                  <div className="flex flex-col lg:flex-row">
+                    {/* Movie Poster */}
+                    <div className="lg:w-48 h-64 lg:h-auto relative overflow-hidden">
+                      <img
+                        src={ticket.moviePoster}
+                        alt={ticket.movieTitle}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+                      {/* Status Badge */}
+                      <div
+                        className={`absolute top-4 right-4 ${statusConfig.bgColor} ${statusConfig.color} px-3 py-1 rounded-full text-sm font-bold flex items-center gap-2`}
+                      >
+                        <StatusIcon />
+                        {statusConfig.label}
+                      </div>
+
+                      {/* Rating */}
+                      <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur rounded-full px-3 py-1 flex items-center gap-1">
+                        <FaStar className="text-yellow-400 text-sm" />
+                        <span className="text-white font-bold text-sm">{ticket.rating}</span>
+                      </div>
+                    </div>
+
+                    {/* Ticket Details */}
+                    <div className="flex-1 p-6">
+                      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between h-full">
+                        <div className="flex-1 mb-4 lg:mb-0">
+                          {/* Movie Title */}
+                          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                            {ticket.movieTitle}
+                          </h3>
+
+                          {/* Movie Info */}
+                          <div className="flex items-center gap-4 mb-4">
+                            <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-semibold">
+                              {ticket.genre}
+                            </span>
+                            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
+                              {ticket.duration} phút
+                            </span>
+                          </div>
+
+                          {/* Cinema and Location */}
+                          <div className="space-y-3 mb-4">
+                            <div className="flex items-center gap-3">
+                              <FaMapMarkerAlt className="text-blue-500 flex-shrink-0" />
+                              <div>
+                                <div className="font-semibold text-gray-900 dark:text-white">
+                                  {ticket.cinema}
+                                </div>
+                                <div className="text-sm text-gray-600 dark:text-gray-400">
+                                  {ticket.cinemaAddress}
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Date and Time */}
+                            <div className="flex items-center gap-6">
+                              <div className="flex items-center gap-2">
+                                <FaCalendarAlt className="text-green-500" />
+                                <span className="text-gray-700 dark:text-gray-300">
+                                  {new Date(ticket.date).toLocaleDateString('vi-VN', {
+                                    weekday: 'long',
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                  })}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <FaClock className="text-orange-500" />
+                                <span className="text-gray-700 dark:text-gray-300">
+                                  {ticket.time}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Room and Seats */}
+                            <div className="flex items-center gap-6">
+                              <div className="text-gray-700 dark:text-gray-300">
+                                <span className="font-semibold">Phòng:</span> {ticket.room}
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <FaCouch className="text-indigo-500" />
+                                <span className="text-gray-700 dark:text-gray-300">
+                                  Ghế: {ticket.seats.join(', ')}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Booking Info */}
+                          <div className="text-sm text-gray-500 dark:text-gray-400">
+                            Mã vé: <span className="font-semibold">{ticket.id}</span> • Đặt ngày:{' '}
+                            {new Date(ticket.bookingDate).toLocaleDateString('vi-VN')}
+                          </div>
+                        </div>
+
+                        {/* Price and Actions */}
+                        <div className="lg:text-right">
+                          <div className="mb-4">
+                            <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                              Tổng tiền
+                            </div>
+                            <div className="text-3xl font-bold text-red-600">
+                              {ticket.totalPrice.toLocaleString()}đ
+                            </div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">
+                              {ticket.seats.length} vé
+                            </div>
+                          </div>
+
+                          {/* Action Buttons */}
+                          <div className="flex lg:flex-col gap-2">
+                            <motion.button
+                              className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition-colors"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => downloadTicket(ticket)}
+                            >
+                              <FaDownload className="text-sm" />
+                              Tải vé
+                            </motion.button>
+                            <motion.button
+                              className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition-colors"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                            >
+                              <FaQrcode className="text-sm" />
+                              QR Code
+                            </motion.button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })
+          )}
+        </motion.div>
+
+        {/* Summary */}
+        {filteredTickets.length > 0 && (
+          <motion.div
+            className="mt-8 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl rounded-2xl shadow-xl p-6 border border-gray-200 dark:border-gray-700"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <div className="text-center">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                Tổng quan
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">
+                Hiển thị {filteredTickets.length} vé • Tổng giá trị:{' '}
+                {filteredTickets
+                  .reduce((sum, ticket) => sum + ticket.totalPrice, 0)
+                  .toLocaleString()}
+                đ
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </div>
     </div>
   );
 };

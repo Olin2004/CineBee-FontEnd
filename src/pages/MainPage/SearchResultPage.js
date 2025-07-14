@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { searchMovies } from '../../services/moviesAPI';
+import SEO from '../../components/SEO/SEO';
+
+const CACHE_PREFIX = 'searchResult_';
+const CACHE_DURATION = 10 * 60 * 1000; // 10 phút
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -14,15 +18,33 @@ export default function SearchResultPage() {
 
   useEffect(() => {
     if (!keyword) return;
+    const cacheKey = `${CACHE_PREFIX}${keyword}`;
+    const cache = localStorage.getItem(cacheKey);
+    if (cache) {
+      const { data, timestamp } = JSON.parse(cache);
+      if (Date.now() - timestamp < CACHE_DURATION) {
+        setMovies(data);
+        setLoading(false);
+        return;
+      }
+    }
     setLoading(true);
     searchMovies(keyword).then((data) => {
-      setMovies(Array.isArray(data) ? data : []);
+      const result = Array.isArray(data) ? data : [];
+      setMovies(result);
       setLoading(false);
+      localStorage.setItem(cacheKey, JSON.stringify({ data: result, timestamp: Date.now() }));
     });
   }, [keyword]);
 
   return (
     <div className="container mx-auto p-4 min-h-[60vh]">
+      <SEO
+        title={`Kết quả tìm kiếm cho "${keyword}" | CineBee`}
+        description={`Tìm kiếm phim "${keyword}" tại CineBee. Khám phá các bộ phim phù hợp nhất với bạn.`}
+        name="CineBee"
+        type="website"
+      />
       <h2 className="text-2xl font-bold mb-6 text-green-500 animate-fade-in">
         Search results for "{keyword}"
       </h2>
