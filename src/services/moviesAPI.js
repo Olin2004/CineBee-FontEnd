@@ -78,3 +78,7 @@ export const deleteMovie = async (movieId) => {
     throw error;
   }
 };
+
+export const getMovieDetail = async (movieId) => {
+  return api.get(`/movies/detail?id=${movieId}`, { withCredentials: true });
+};

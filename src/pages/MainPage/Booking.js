@@ -19,7 +19,6 @@ import {
   FaPlay,
   FaUsers,
   FaFire,
-  FaMobile,
   FaSpinner,
   FaWallet,
   FaQrcode,
@@ -1504,7 +1503,11 @@ export default function BookingPage() {
                     {isProcessingPayment ? (
                       <FaSpinner className="text-3xl text-white animate-spin" />
                     ) : (
-                      <FaMobile className="text-3xl text-white" />
+                      <img
+                        src="/momo_icon_square_pinkbg.svg"
+                        alt="MoMo"
+                        className="w-12 h-12 object-contain rounded-xl"
+                      />
                     )}
                   </div>
                   <div>
@@ -1550,7 +1553,11 @@ export default function BookingPage() {
                         </span>
                       ) : (
                         <span>
-                          <FaMobile className="inline mr-2" />
+                          <img
+                            src="/momo_icon_square_pinkbg.svg"
+                            alt="MoMo"
+                            className="inline w-12 h-12 mr-2 object-contain rounded-md"
+                          />
                           THANH TOÁN MOMO
                         </span>
                       )}
@@ -1587,7 +1594,11 @@ export default function BookingPage() {
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 bg-emerald-100 dark:bg-emerald-800 rounded-lg flex items-center justify-center">
-                    <FaMobile className="text-emerald-600" />
+                    <img
+                      src="/momo_icon_square_pinkbg.svg"
+                      alt="MoMo"
+                      className="w-5 h-5 object-contain rounded-sm"
+                    />
                   </div>
                   <div>
                     <p className="font-semibold">Thanh toán MoMo</p>

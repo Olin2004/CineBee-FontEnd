@@ -4,6 +4,7 @@ import { Form, Input, Button, Spin, message, DatePicker, Select, InputNumber, Up
 import { PlusOutlined } from '@ant-design/icons';
 import { FaFilm, FaCheck, FaTimes } from 'react-icons/fa';
 import { addMovieNew } from '../../../services/moviesAPI';
+import PropTypes from 'prop-types';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -48,18 +49,30 @@ const countryOptions = [
   'Tây Ban Nha',
 ];
 
-const AddMovieForm = () => {
+const AddMovieForm = ({ initialValues, onSubmit, mode = 'add' }) => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [posterPreview, setPosterPreview] = useState(null);
   const [posterFile, setPosterFile] = useState(null);
+
+  // Khi initialValues thay đổi (edit), set vào form
   useEffect(() => {
-    // Reset form for adding new movie
-    form.resetFields();
-    setPosterPreview(null);
-    setPosterFile(null);
-  }, [form]);
+    if (initialValues) {
+      form.setFieldsValue({
+        ...initialValues,
+        releaseDate: initialValues.releaseDate,
+      });
+      // Nếu có posterUrl thì preview luôn
+      if (initialValues.posterUrl) {
+        setPosterPreview(initialValues.posterUrl);
+      }
+    } else {
+      form.resetFields();
+      setPosterPreview(null);
+      setPosterFile(null);
+    }
+  }, [form, initialValues]);
 
   const handlePosterChange = ({ fileList }) => {
     if (fileList.length > 0) {
@@ -82,7 +95,6 @@ const AddMovieForm = () => {
   const onFinish = async (values) => {
     try {
       setLoading(true);
-      console.log('Form values:', values); // Debug log
       // Validate poster file
       if (!posterFile && !values.posterUrl) {
         message.error('Vui lòng chọn ảnh poster hoặc nhập link poster cho phim');
@@ -91,10 +103,11 @@ const AddMovieForm = () => {
       }
       // Convert date to string format that API expects
       let releaseDate = null;
-      if (values.releaseDate) {
+      if (values.releaseDate && values.releaseDate.format) {
         releaseDate = values.releaseDate.format('YYYY-MM-DD');
+      } else if (values.releaseDate) {
+        releaseDate = values.releaseDate;
       }
-      // Chỉ gửi đúng các trường backend yêu cầu
       const movieData = {
         title: values.title,
         othernames: values.othernames || '',
@@ -109,26 +122,26 @@ const AddMovieForm = () => {
         releaseDate: releaseDate,
         trailerUrl: values.trailerUrl || '',
       };
-      console.log('Movie data to send:', movieData); // Debug log
-      console.log('Poster file:', posterFile); // Debug log
-      // Call real API
-      const response = await addMovieNew(movieData, posterFile);
-      console.log('API response:', response); // Debug log
-      if (response.status === 200 || response.status === 201) {
-        message.success('Thêm phim mới thành công!');
-        form.resetFields();
-        setPosterPreview(null);
-        setPosterFile(null);
-        setTimeout(() => {
-          navigate('/admin/movies');
-        }, 2000);
+      // Gọi callback onSubmit nếu có (edit hoặc add)
+      if (onSubmit) {
+        await onSubmit(movieData, posterFile);
       } else {
-        message.error('Có lỗi xảy ra khi thêm phim');
+        // Mặc định: thêm mới
+        const response = await addMovieNew(movieData, posterFile);
+        if (response.status === 200 || response.status === 201) {
+          message.success('Thêm phim mới thành công!');
+          form.resetFields();
+          setPosterPreview(null);
+          setPosterFile(null);
+          setTimeout(() => {
+            navigate('/admin/movies');
+          }, 2000);
+        } else {
+          message.error('Có lỗi xảy ra khi thêm phim');
+        }
       }
     } catch (error) {
-      console.error('Error adding movie:', error);
-      console.error('Error response:', error.response); // Debug log
-      const errorMessage = error.response?.data?.message || error.message || 'Có lỗi xảy ra khi thêm phim';
+      const errorMessage = error.response?.data?.message || error.message || 'Có lỗi xảy ra';
       message.error(errorMessage);
     } finally {
       setLoading(false);
@@ -141,9 +154,10 @@ const AddMovieForm = () => {
           <div className="p-3 rounded-lg bg-yellow-100 text-yellow-600">
             <FaFilm size={24} />
           </div>
-          <h1 className="text-xl font-bold ml-4">Thêm phim mới</h1>
+          <h1 className="text-xl font-bold ml-4">
+            {mode === 'edit' ? 'Chỉnh sửa phim' : 'Thêm phim mới'}
+          </h1>
         </div>
-        {/* Xoá nút Test API với dữ liệu mẫu */}
       </div>
 
       <Spin spinning={loading}>
@@ -345,13 +359,19 @@ const AddMovieForm = () => {
               style={{ backgroundColor: '#FFCC00', borderColor: '#FFCC00' }}
               icon={<FaCheck />}
             >
-              Thêm phim
+              {mode === 'edit' ? 'Cập nhật' : 'Thêm phim'}
             </Button>
           </div>
         </Form>
       </Spin>
     </div>
   );
+};
+
+AddMovieForm.propTypes = {
+  initialValues: PropTypes.object,
+  onSubmit: PropTypes.func,
+  mode: PropTypes.oneOf(['add', 'edit']),
 };
 
 export default AddMovieForm;

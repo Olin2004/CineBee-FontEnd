@@ -34,6 +34,7 @@ const TheaterManagement = lazy(() => import('../pages/Admin/Dashbroad/TheaterMan
 const UserManagement = lazy(() => import('../pages/Admin/Dashbroad/UserManagement'));
 const PromotionManagement = lazy(() => import('../pages/Admin/Dashbroad/PromotionManagement'));
 const ReviewManagement = lazy(() => import('../pages/Admin/Dashbroad/ReviewManagement'));
+const EditMovie = lazy(() => import('../pages/Admin/Dashbroad/EditMovie'));
 
 // Staff Components
 const StaffDashboard = lazy(() => import('../pages/Staff/StaffDashboard'));
@@ -93,6 +94,14 @@ const userRoutes = [
             element: (
               <LazyRoute>
                 <AddMovieForm />
+              </LazyRoute>
+            ),
+          },
+          {
+            path: '/admin/movies/edit/:id',
+            element: (
+              <LazyRoute>
+                <EditMovie />
               </LazyRoute>
             ),
           },

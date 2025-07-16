@@ -1,6 +1,6 @@
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import React, { lazy, Suspense, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import SwiperCore from 'swiper';
@@ -13,14 +13,11 @@ import {
   Pagination as PaginationModules,
 } from 'swiper/modules';
 import SEO from '../../components/SEO/SEO';
-import Banner from './components/Banner';
-import WeekTabs from './components/WeekTabs';
+import Banner from './Banner';
+import WeekTabs from './WeekTabs';
+import { TrendingSection } from './TrendingBadge';
 import MovieList from '../../components/MovieList';
 SwiperCore.use([AutoplayModules, PaginationModules, EffectFadeModules]);
-
-const TrendingSection = lazy(() =>
-  import('./components/TrendingBadge').then((m) => ({ default: m.TrendingSection }))
-);
 
 const Home = () => {
   const [contentVisible, setContentVisible] = useState(false);
@@ -69,18 +66,14 @@ const Home = () => {
             contentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          {/* Trending Section - tối ưu UI */}
+          {/* Trending Section - hiển thị danh sách trending movies */}
           <div
             className="animate-fade-in-up"
             style={{ animationDelay: '150ms' }}
             data-aos="fade-up"
             data-aos-delay="100"
           >
-            <Suspense
-              fallback={<div className="w-full flex justify-center py-8">Loading trending...</div>}
-            >
-              <TrendingSection showBookButton />
-            </Suspense>
+            <TrendingSection showBookButton={true} />
           </div>
 
           {/* Week tabs with enhanced styling */}

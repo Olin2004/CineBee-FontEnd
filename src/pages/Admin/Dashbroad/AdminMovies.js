@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaPlus, FaFilm, FaEdit, FaTrash, FaEye, FaTh, FaList, FaSearch } from 'react-icons/fa';
+import { FaPlus, FaFilm, FaEdit, FaTrash, FaEye, FaTh, FaList, FaSearch, FaImage } from 'react-icons/fa';
 import { getListMovies, deleteMovie } from '../../../services/moviesAPI';
-import { Spin, message, Pagination, Table, Input, Tooltip, Modal, Button } from 'antd';
+import { addBanner } from '../../../services/bannerAPI';
+import { Spin, message, Pagination, Table, Input, Tooltip, Modal, Button, Form, DatePicker } from 'antd';
+import moment from 'moment';
 
 const AdminMovies = () => {
   const navigate = useNavigate();
@@ -15,7 +17,12 @@ const AdminMovies = () => {
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
+  const [isBannerModalOpen, setBannerModalOpen] = useState(false);
+  const [bannerForm] = Form.useForm();
+  const [selectedBannerMovie, setSelectedBannerMovie] = useState(null);
   const pageSize = 10; // Fetch movies list
+  const [formKey, setFormKey] = useState('closed');
+
   const fetchMovies = async (page = 1) => {
     try {
       setLoading(true);
@@ -140,6 +147,39 @@ const AdminMovies = () => {
     }
   };
 
+  // Dummy handler for now
+  const handleAddBanner = (movie) => {
+    setSelectedBannerMovie(movie);
+    setBannerModalOpen(true);
+    setTimeout(() => {
+      bannerForm.resetFields();
+      bannerForm.setFieldsValue({
+        movieId: movie.id,
+        startDate: null,
+        endDate: null,
+        title: '',
+        description: '',
+        bannerUrl: '',
+      });
+    }, 0);
+  };
+
+  const handleCreateBanner = async (values) => {
+    const payload = {
+      ...values,
+      startDate: moment.isMoment(values.startDate) ? values.startDate.format('YYYY-MM-DD') : moment(values.startDate, 'YYYY-MM-DD').format('YYYY-MM-DD'),
+      endDate: moment.isMoment(values.endDate) ? values.endDate.format('YYYY-MM-DD') : moment(values.endDate, 'YYYY-MM-DD').format('YYYY-MM-DD'),
+    };
+    try {
+      await addBanner(payload);
+      message.success('Tạo banner thành công!');
+      setBannerModalOpen(false);
+      bannerForm.resetFields();
+    } catch (error) {
+      message.error('Tạo banner thất bại!');
+    }
+  };
+
   // Table columns for table view
   const tableColumns = [
     {
@@ -255,8 +295,15 @@ const AdminMovies = () => {
             <FaEye />
           </button>
           <button
+            onClick={() => handleAddBanner(record)}
+            className="p-2 text-green-600 hover:bg-green-50 rounded transition-colors"
+            title="Thêm Banner"
+          >
+            <FaImage />
+          </button>
+          <button
             onClick={() => {
-              navigate(`/admin/movies/edit/${record.id}`);
+              navigate(`/admin/movies/edit/${record.id}`, { state: { movie: record } });
             }}
             className="p-2 text-yellow-600 hover:bg-yellow-50 rounded transition-colors"
             title="Chỉnh sửa"
@@ -440,12 +487,21 @@ const AdminMovies = () => {
                               <FaEye />
                             </button>
                             <button
-                              onClick={() => navigate(`/admin/movies/edit/${movie.id}`)}
+                              onClick={() => handleAddBanner(movie)}
+                              className="p-2 bg-green-600 hover:bg-green-700 text-white rounded-full transition-colors"
+                              title="Thêm Banner"
+                            >
+                              <FaImage />
+                            </button>{' '}
+                            <button
+                              onClick={() => {
+                                navigate(`/admin/movies/edit/${movie.id}`);
+                              }}
                               className="p-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-full transition-colors"
                               title="Chỉnh sửa"
                             >
                               <FaEdit />
-                            </button>{' '}
+                            </button>
                             <button
                               onClick={() => handleDeleteMovie(movie.id)}
                               className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-full transition-colors"
@@ -718,6 +774,41 @@ const AdminMovies = () => {
             </div>
           </div>
         )}
+      </Modal>
+
+      {/* Banner Modal */}
+      <Modal
+        title={<span>Thêm Banner cho phim: {selectedBannerMovie?.title}</span>}
+        open={isBannerModalOpen}
+        onCancel={() => {
+          setBannerModalOpen(false);
+          bannerForm.resetFields();
+        }}
+        footer={null}
+        width={600}
+      >
+        <Form
+          form={bannerForm}
+          layout="vertical"
+          onFinish={handleCreateBanner}
+        >
+          <Form.Item name="title" label="Tiêu đề" rules={[{ required: true, message: 'Nhập tiêu đề banner' }]}> <Input placeholder="Nhập tiêu đề banner" /> </Form.Item>
+          <Form.Item name="description" label="Mô tả" rules={[{ required: true, message: 'Nhập mô tả' }]}> <Input placeholder="Nhập mô tả banner" /> </Form.Item>
+          <Form.Item name="bannerUrl" label="Banner URL" rules={[{ required: true, message: 'Nhập URL banner' }]}> <Input placeholder="Nhập URL banner" /> </Form.Item>
+          <Form.Item
+            name="movieId"
+            label="Movie ID"
+            rules={[{ required: true, message: 'Chọn phim' }]}
+          >
+            <Input disabled />
+          </Form.Item>
+          <Form.Item name="startDate" label="Ngày bắt đầu" rules={[{ required: true, message: 'Chọn ngày bắt đầu' }]}> <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" inputReadOnly allowClear={false} /> </Form.Item>
+          <Form.Item name="endDate" label="Ngày kết thúc" rules={[{ required: true, message: 'Chọn ngày kết thúc' }]}> <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" inputReadOnly allowClear={false} /> </Form.Item>
+          <div className="flex justify-end gap-2">
+            <Button onClick={() => setBannerModalOpen(false)}>Hủy</Button>
+            <Button type="primary" htmlType="submit">Tạo Banner</Button>
+          </div>
+        </Form>
       </Modal>
     </div>
   );
